@@ -120,7 +120,7 @@ const AIHelp = () => {
 
         {/* AI Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredAIs.map((ai) => (
+          {filteredAIs.map((ai : any) => (
             <div
               key={ai.id}
               className={`group relative bg-gradient-to-br ${colorVariants[ai.color]} 
@@ -147,7 +147,7 @@ const AIHelp = () => {
               <div className="mb-4">
                 <h4 className="text-white/80 text-sm font-medium mb-2">Capabilities:</h4>
                 <div className="flex flex-wrap gap-2">
-                  {ai.capabilities.map((capability, index) => (
+                  {ai.capabilities.map((capability : any, index : any) => (
                     <span
                       key={index}
                       className="text-xs px-2 py-1 rounded-full bg-white/10 text-white/80"
@@ -162,7 +162,7 @@ const AIHelp = () => {
               <div>
                 <h4 className="text-white/80 text-sm font-medium mb-2">Key Topics:</h4>
                 <div className="flex flex-wrap gap-2">
-                  {ai.topics.map((topic, index) => (
+                  {ai.topics.map((topic : any, index : any) => (
                     <span
                       key={index}
                       className="text-xs px-2 py-1 rounded-full bg-white/10 text-white/80"

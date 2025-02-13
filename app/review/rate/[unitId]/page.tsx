@@ -28,7 +28,20 @@ const unitInfo: UnitInfo = {
   prerequisites: ["COMP2123", "MATH1064"]
 };
 
-
+interface UnitData {
+  id: string;
+  unitCode: string;
+  unitName: string;
+  faculty: string;
+  description: string;
+  area: string;
+  content: string[]; 
+  weeklyTopics: string[];
+  assessments: string[]; 
+  prerequisites: string[];
+  postrequisites: string[]; 
+  reviews: any[];
+}
 interface UnitInfo {
   code: string;
   name: string;
@@ -37,6 +50,30 @@ interface UnitInfo {
   credits: number;
   description: string;
   prerequisites?: string[];
+}
+
+interface ReviewData {
+  id : string,
+  unitCode : string,
+  username : string,
+  overallRating : number,
+  teachingRating : number,
+  workloadRating : number,
+  difficultyRating : number,
+  contentRating : number,
+  timestamp : EpochTimeStamp,
+  comment : string
+  like : number,
+  dislike : number,
+  
+}
+
+interface RatingData{
+  contentRating : number,
+  difficultyRating : number,
+  overallRating  : number,
+  teachingRating  : number,
+  workloadRating : number
 }
 
  const ReviewSubmissionForm = () => {
@@ -56,9 +93,9 @@ interface UnitInfo {
   const [semester, setSemester] = useState('');
   const [grade, setGrade] = useState('');
   const [comment, setComment] = useState('');
-  const [rating, setRating] = useState(null);
+  const [rating, setRating] = useState<RatingData | null>(null);
   const [averageRating, setAverageRating] = useState(5.0);
-  const [unit, setUnit] = useState({});
+  const [unit, setUnit] = useState<UnitData | null>(null);
   const [metrics, setMetrics] = useState<RatingMetric[]>([
     { 
       name: 'workload', 
@@ -173,7 +210,7 @@ interface UnitInfo {
 
       });        
 
-      console.log(data);
+      // console.log(data);
     }catch(error){
 
     }
@@ -188,13 +225,13 @@ interface UnitInfo {
             {/* Unit Info */}
             <div>
               <div className="text-purple-400 font-medium mb-1">
-                {unit.unitCode}
+                {unit?.unitCode}
               </div>
               <h2 className="text-xl font-bold text-white mb-2">
-                {unit.unitName}
+                {unit?.unitName}
               </h2>
               <div className="text-white/60 text-sm">
-                Faculty of {unit.faculty}
+                Faculty of {unit?.faculty}
               </div>
             </div>
 
@@ -207,7 +244,7 @@ interface UnitInfo {
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
                   <span className="text-white/60 text-sm">Overall</span>
-                  <span className="text-white font-medium">{rating.overallRating}</span>
+                  <span className="text-white font-medium">{rating?.overallRating}</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-white/60 text-sm">Workload</span>

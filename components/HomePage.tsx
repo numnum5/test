@@ -1,9 +1,5 @@
 'use client';
-
-import { motion } from "framer-motion";
-import { SparklesCore } from "@/components/ui/sparkles";
 import { TextGenerateEffect } from "./ui/text-effect-generate";
-// import { InfiniteMovingCards } from "@/components/ui/infinite-moving-cards";
 import { HoverEffect } from "./ui/card-hover-effect";
 import { Meteors } from "@/components/ui/meteors";
 

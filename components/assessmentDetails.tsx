@@ -3,7 +3,6 @@
 import { FC, useState } from 'react';
 import { IoChevronDownOutline, IoChevronUpOutline } from 'react-icons/io5';
 import { BsCalendar4, BsClockFill, BsFileText } from 'react-icons/bs';
-import { FaStar } from 'react-icons/fa';
 import { BsCalendarWeek } from 'react-icons/bs';
 import { BsBook } from 'react-icons/bs';
 interface Assessment {
@@ -148,6 +147,7 @@ export const AssessmentSection: FC<Props> = ({ assessment, onReviewClick }) => {
       ratings: {
         overall: 8,
         difficulty: 7,
+        workload : 10,
         relevance: 9
       },
       timeSpent: '40-50 hours',

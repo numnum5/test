@@ -1,7 +1,24 @@
+
+
+
 'use client';
 
 import { BsArrowRight, BsBook, BsCheckCircle, BsLightbulb } from 'react-icons/bs';
 
+interface UnitData {
+  id: string;
+  unitCode: string;
+  unitName: string;
+  faculty: string;
+  description: string;
+  area: string;
+  content: string[]; 
+  weeklyTopics: string[];
+  assessments: string[]; 
+  prerequisites: string[];
+  postrequisites: string[]; 
+  reviews: any[];
+}
 interface UnitCode {
   code: string;
   name: string;
@@ -12,19 +29,6 @@ interface LearningOutcome {
   id: string;
   description: string;
 }
-
-const prerequisites: UnitCode[] = [
-  {
-    code: "COMP2001",
-    name: "Data Structures",
-    description: "Fundamental data structures and algorithms"
-  },
-  {
-    code: "MATH2004",
-    name: "Linear Algebra",
-    description: "Vector spaces and linear transformations"
-  }
-];
 
 const recommendedBackground = [
   "Strong programming skills in Python",
@@ -48,20 +52,13 @@ const learningOutcomes: LearningOutcome[] = [
   }
 ];
 
-const followUpUnits: UnitCode[] = [
-  {
-    code: "COMP4001",
-    name: "Deep Learning",
-    description: "Advanced neural networks and deep learning"
-  },
-  {
-    code: "COMP4002",
-    name: "Computer Vision",
-    description: "Image processing and visual recognition"
-  }
-];
 
-export const SubjectDetails = () => {
+
+export const SubjectDetails = ({unit} : {unit : UnitData}) => {
+  console.log("prerequesites");
+  console.log(unit.prerequisites);
+
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 gap-6 p-2 border-t border-[rgba(255,255,255,0.125)]">
       {/* Prerequisites */}
@@ -71,23 +68,23 @@ export const SubjectDetails = () => {
           Required Prerequisites
         </h3>
         <div className="space-y-3">
-          {prerequisites.map((unit) => (
+          {unit.prerequisites.map((unit) => (
             <div
-              key={unit.code}
+              key={unit}
               className="bg-[rgba(255,255,255,0.05)] rounded-lg p-3 hover:bg-[rgba(255,255,255,0.08)]
                        transition-all duration-200 cursor-pointer"
             >
               <div className="text-purple-400 font-medium text-sm mb-1">
-                {unit.code}
+                {unit}
               </div>
               <div className="text-white font-medium mb-1">
-                {unit.name}
+                {/* {unit.name} */}
               </div>
-              {unit.description && (
+              {/* {unit.description && (
                 <div className="text-white/60 text-sm">
                   {unit.description}
                 </div>
-              )}
+              )} */}
             </div>
           ))}
         </div>
@@ -142,23 +139,23 @@ export const SubjectDetails = () => {
           Follow-up Units
         </h3>
         <div className="space-y-3">
-          {followUpUnits.map((unit) => (
+          {unit.postrequisites.map((unit) => (
             <div
-              key={unit.code}
+              key={unit}
               className="bg-[rgba(255,255,255,0.05)] rounded-lg p-3 hover:bg-[rgba(255,255,255,0.08)]
                        transition-all duration-200 cursor-pointer"
             >
               <div className="text-purple-400 font-medium text-sm mb-1">
-                {unit.code}
+                {unit}
               </div>
               <div className="text-white font-medium mb-1">
-                {unit.name}
+                {unit}
               </div>
-              {unit.description && (
+              {/* {unit.description && (
                 <div className="text-white/60 text-sm">
                   {unit.description}
                 </div>
-              )}
+              )} */}
             </div>
           ))}
         </div>

@@ -13,7 +13,7 @@ import { IoSearchOutline } from 'react-icons/io5';
 import { BiLike, BiDislike } from 'react-icons/bi';
 
 interface UnitData {
-  _id: string;
+  id: string;
   unitCode: string;
   unitName: string;
   faculty: string;
@@ -27,16 +27,19 @@ interface UnitData {
   reviews: any[];
 }
 
-
-interface RatingMetric {
-  name: string;
-  value: number;
-  isNegative : boolean;
+interface RatingData{
+  contentRating : number,
+  difficultyRating : number,
+  overallRating  : number,
+  teachingRating  : number,
+  workloadRating : number
 }
+
+
 const SubjectRating = () => {
   const [selectedSection, setSelectedSection] = useState("review");
   const [subject2, setSubject] = useState<UnitData | null>(null);
-  const [rating, setRating] = useState([]);
+  const [rating, setRating] = useState<RatingData | null>(null);
   const params = useParams();
   const unitId = params.unitId;
     
@@ -44,7 +47,7 @@ const SubjectRating = () => {
     try{
       
       const {data} = await axios.get(`http://localhost:5280/api/units/${unitId}`);
-      console.log(data);
+      console.log("subject: ", data);
       setSubject(data);
     
     }
@@ -121,7 +124,7 @@ const SubjectRating = () => {
                     </div>
                   </div>
                   <div className="text-center">
-                    <div className="text-4xl font-bold text-white mb-1">{rating.overallRating}/10</div>
+                    <div className="text-4xl font-bold text-white mb-1">{rating?.overallRating}/10</div>
                     <div className="text-white/60 text-sm">Overall Rating</div>
                   </div>
                 </div>
@@ -132,25 +135,26 @@ const SubjectRating = () => {
 
               {/* Ratings Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 p-6 border-t border-[rgba(255,255,255,0.125)]">
-                {Object.entries(rating).map(([key, value]) => (
-                  key !== 'overallRating' && (
-                    <div key={key} className="bg-[rgba(255,255,255,0.1)] rounded-lg p-4">
-                      <div className="text-white/60 capitalize mb-2">{key}</div>
-                      <div className="flex items-center gap-2">
-                        <div className="h-2 flex-grow bg-[rgba(255,255,255,0.1)] rounded-full overflow-hidden">
-                          <div 
-                            className="h-full bg-purple-500 rounded-full"
-                            style={{ width: `${(value/10)*100}%` }}
-                          />
-                        </div>
-                        <span className="text-white font-medium">{value}/10</span>
+              {Object.entries(rating || {}).map(([key, val]) => {
+                if (key === 'overallRating' || val === undefined) return null;
+                return (
+                  <div key={key} className="bg-[rgba(255,255,255,0.1)] rounded-lg p-4">
+                    <div className="text-white/60 capitalize mb-2">{key}</div>
+                    <div className="flex items-center gap-2">
+                      <div className="h-2 flex-grow bg-[rgba(255,255,255,0.1)] rounded-full overflow-hidden">
+                        <div 
+                          className="h-full bg-purple-500 rounded-full"
+                          style={{ width: `${(val / 10) * 100}%` }}
+                        />
                       </div>
+                      <span className="text-white font-medium">{val}/10</span>
                     </div>
-                  )
-                ))}
+                  </div>
+                );
+              })}
               </div>
 
-            <SubjectDetails/>
+            <SubjectDetails unit={subject2}/>
             <AssessmentDetails/>
             <ResourcesSection/>
             <RecommendationsSection/>
@@ -200,7 +204,7 @@ const SubjectRating = () => {
               
                  <div>
         {selectedSection === "qanda" ? (
-          <QASection2 subject={subject}/>
+          <QASection2 subject={subject2}/>
         ) : (
               <div>  
               <RevisedReviewSection unit={subject2} />
@@ -216,7 +220,7 @@ const SubjectRating = () => {
 };
 
 
-const CourseDetailsSection = ({ subject, test }) => {
+const CourseDetailsSection = ({ subject, test } : {subject : any, test : UnitData}) => {
   
   console.log(test);
  
@@ -256,14 +260,14 @@ const CourseDetailsSection = ({ subject, test }) => {
           <h4 className="text-white font-medium mb-3">Delivery Mode</h4>
           <div className="space-y-2">
             <div className="text-white/70 mb-2">{subject.offering.deliveryMode}</div>
-            <div className="space-y-1">
+            {/* <div className="space-y-1">
               {Object.entries(subject.offering.classSchedule).map(([type, hours]) => (
                 <div key={type} className="flex justify-between text-white/70">
                   <span className="capitalize">{type}:</span>
                   <span>{hours}</span>
                 </div>
               ))}
-            </div>
+            </div> */}
           </div>
         </div>
 
@@ -308,7 +312,7 @@ const CourseDetailsSection = ({ subject, test }) => {
 
 
 
-const QASection2 = ({ subject }) => {
+const QASection2 = ({ subject } : {subject : UnitData}) => {
     const [showAskForm, setShowAskForm] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedTag, setSelectedTag] = useState('all');
@@ -356,7 +360,7 @@ const QASection2 = ({ subject }) => {
       }
     ]);
   
-    const handleVote = (questionId, direction) => {
+    const handleVote = (questionId : any, direction : any) => {
       setQuestions(prev => prev.map(q => {
         if (q.id === questionId) {
           return {
@@ -402,24 +406,25 @@ const QASection2 = ({ subject }) => {
             className="w-full bg-white/10 rounded-lg p-4 text-white resize-none h-32 focus:outline-none focus:ring-1 focus:ring-purple-500/50"
           />
           <div className="flex gap-2">
-            {['exam', 'assignments', 'concepts', 'general'].map(tag => (
-              <button
-                key={tag}
-                onClick={() => setNewQuestion(prev => ({
-                  ...prev,
-                  tags: prev.tags.includes(tag)
-                    ? prev.tags.filter(t => t !== tag)
-                    : [...prev.tags, tag]
-                }))}
-                className={`px-3 py-1 rounded-lg text-sm ${
-                  newQuestion.tags.includes(tag)
-                    ? 'bg-purple-600 text-white'
-                    : 'bg-white/10 text-white/60 hover:bg-white/20'
-                }`}
-              >
-                {tag}
-              </button>
-            ))}
+                {['exam', 'assignments', 'concepts', 'general'].map(tag => (
+          <button
+            key={tag}
+            onClick={() => setNewQuestion((prev : any) => ({
+              ...prev,
+              tags: prev.tags.includes(tag)
+                ? prev.tags.filter((t : any) => t !== tag)
+                : [...prev.tags, tag]
+            }))}
+            className={`px-3 py-1 rounded-lg text-sm ${
+              newQuestion.tags.includes(tag)
+                ? 'bg-purple-600 text-white'
+                : 'bg-white/10 text-white/60 hover:bg-white/20'
+            }`}
+          >
+            {tag}
+    </button>
+  ))}
+            
           </div>
           <div className="flex justify-end gap-3">
             <button
@@ -441,14 +446,16 @@ const QASection2 = ({ subject }) => {
     );
     
 
-  
-  const QuestionCard = ({ question, onVote }) => {
+    type Question = {
+      tags: string[];
+    };
+  const QuestionCard = ({ question, onVote } : {question : any, onVote : any}) => {
     const [isExpanded, setIsExpanded] = useState(true); // Changed to default true
     const [newComment, setNewComment] = useState('');
     const [replyingTo, setReplyingTo] = useState(null);
     const [replyContent, setReplyContent] = useState('');
   
-    const handleAddComment = (questionId) => {
+    const handleAddComment = (questionId : any) => {
       if (!newComment.trim()) return;
   
       const comment = {
@@ -474,7 +481,7 @@ const QASection2 = ({ subject }) => {
       setNewComment('');
     };
   
-    const handleAddReply = (questionId, commentId) => {
+    const handleAddReply = (questionId : any, commentId : any) => {
       if (!replyContent.trim()) return;
   
       const reply = {
@@ -537,7 +544,7 @@ const QASection2 = ({ subject }) => {
 
         {/* Tags */}
         <div className="flex flex-wrap gap-2 mb-4">
-          {question.tags.map((tag, index) => (
+          {question.tags.map((tag:  any, index : any) => (
             <span
               key={index}
               className="text-xs px-2 py-1 rounded-full bg-purple-500/20 text-purple-300"
@@ -584,7 +591,7 @@ const QASection2 = ({ subject }) => {
                   onChange={(e) => setNewComment(e.target.value)}
                   placeholder="Add to the discussion..."
                   className="w-full bg-white/10 rounded-lg p-3 text-white text-sm resize-none focus:outline-none focus:ring-1 focus:ring-purple-500/50"
-                  rows="2"
+                  // rows="2"
                 />
                 <div className="flex justify-end gap-2 mt-2">
                   <button
@@ -606,7 +613,7 @@ const QASection2 = ({ subject }) => {
   
             {/* Comments List */}
             <div className="space-y-4">
-              {question.comments.map((comment) => (
+              {question.comments.map((comment : any) => (
                 <div key={comment.id} className="flex gap-3 group">
                   <div className="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center">
                     <span className="text-white text-sm">{comment.author[0]}</span>
@@ -651,7 +658,7 @@ const QASection2 = ({ subject }) => {
                               onChange={(e) => setReplyContent(e.target.value)}
                               placeholder="Write a reply..."
                               className="w-full bg-white/10 rounded-lg p-3 text-white text-sm resize-none focus:outline-none focus:ring-1 focus:ring-purple-500/50"
-                              rows="2"
+                              // rows="2"
                             />
                             <div className="flex justify-end gap-2 mt-2">
                               <button
@@ -679,7 +686,7 @@ const QASection2 = ({ subject }) => {
                     {/* Nested Replies */}
                     {comment.replies && comment.replies.length > 0 && (
                       <div className="mt-3 pl-6 space-y-3 border-l border-white/10">
-                        {comment.replies.map((reply) => (
+                        {comment.replies.map((reply : any) => (
                           <div key={reply.id} className="flex gap-3 group">
                             <div className="w-6 h-6 rounded-full bg-purple-600 flex items-center justify-center">
                               <span className="text-white text-xs">{reply.author[0]}</span>
