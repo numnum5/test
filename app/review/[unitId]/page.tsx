@@ -26,7 +26,7 @@ interface UnitData {
   assessments: string[]; 
   prerequisites: string[];
   postrequisites: string[]; 
-  reviews: any[];
+  reviews: string[];
 }
 
 interface RatingData{
@@ -206,7 +206,8 @@ const SubjectRating = () => {
               
                  <div>
         {selectedSection === "qanda" ? (
-          <QASection subject={subject2}/>
+          <></>
+          // <QASection subject={subject2}/>
         ) : (
               <div>  
               <RevisedReviewSection unit={subject2} />
@@ -222,7 +223,7 @@ const SubjectRating = () => {
 };
 
 
-const CourseDetailsSection = ({ subject, test } : {subject : any, test : UnitData}) => {
+const CourseDetailsSection = ({ subject, test } : {subject : Subject, test : UnitData}) => {
   
   console.log(test);
  
@@ -314,517 +315,517 @@ const CourseDetailsSection = ({ subject, test } : {subject : any, test : UnitDat
 
 
 
-const QASection = ({ subject } : {subject : UnitData}) => {
-    const [showAskForm, setShowAskForm] = useState(false);
-    const [searchQuery, setSearchQuery] = useState('');
-    const [selectedTag, setSelectedTag] = useState('all');
-    const [newQuestion, setNewQuestion] = useState({ title: '', content: '', tags: [] });
-    const [questions, setQuestions] = useState([
-      {
-        id: 1,
-        title: "How to approach the final exam?",
-        content: "I'm struggling with the exam preparation. Any tips on how to effectively study for this subject? What are the key topics to focus on?",
-        author: "Sarah Chen",
-        timestamp: "2024-02-09T12:00:00Z",
-        votes: 15,
-        tags: ["exam", "study-tips"],
-        comments: [
-          {
-            id: 1,
-            author: "Prof. Smith",
-            content: "Focus on the weekly tutorial problems and practice exams. Pay special attention to Chapters 4-6 as they cover the core concepts.",
-            timestamp: "2024-02-09T13:00:00Z",
-            likes: 12,
-            dislikes: 0,
-            replies: [
-              {
-                id: 2,
-                author: "Michael Park",
-                content: "Thank you professor! Could you also clarify if we need to memorize all the formulas?",
-                timestamp: "2024-02-09T13:30:00Z",
-                likes: 5,
-                dislikes: 0
-              }
-            ]
-          },
-          {
-            id: 3,
-            author: "Emma Wilson",
-            content: "I found creating summary sheets for each topic really helpful. Happy to share mine if anyone's interested!",
-            timestamp: "2024-02-09T14:00:00Z",
-            likes: 8,
-            dislikes: 0,
-            replies: []
-          }
-        ]
-      }
-    ]);
+// const QASection = () => {
+//     const [showAskForm, setShowAskForm] = useState(false);
+//     const [searchQuery, setSearchQuery] = useState('');
+//     const [selectedTag, setSelectedTag] = useState('all');
+//     const [newQuestion, setNewQuestion] = useState({ title: '', content: '', tags: [] });
+//     const [questions, setQuestions] = useState([
+//       {
+//         id: 1,
+//         title: "How to approach the final exam?",
+//         content: "I'm struggling with the exam preparation. Any tips on how to effectively study for this subject? What are the key topics to focus on?",
+//         author: "Sarah Chen",
+//         timestamp: "2024-02-09T12:00:00Z",
+//         votes: 15,
+//         tags: ["exam", "study-tips"],
+//         comments: [
+//           {
+//             id: 1,
+//             author: "Prof. Smith",
+//             content: "Focus on the weekly tutorial problems and practice exams. Pay special attention to Chapters 4-6 as they cover the core concepts.",
+//             timestamp: "2024-02-09T13:00:00Z",
+//             likes: 12,
+//             dislikes: 0,
+//             replies: [
+//               {
+//                 id: 2,
+//                 author: "Michael Park",
+//                 content: "Thank you professor! Could you also clarify if we need to memorize all the formulas?",
+//                 timestamp: "2024-02-09T13:30:00Z",
+//                 likes: 5,
+//                 dislikes: 0
+//               }
+//             ]
+//           },
+//           {
+//             id: 3,
+//             author: "Emma Wilson",
+//             content: "I found creating summary sheets for each topic really helpful. Happy to share mine if anyone's interested!",
+//             timestamp: "2024-02-09T14:00:00Z",
+//             likes: 8,
+//             dislikes: 0,
+//             replies: []
+//           }
+//         ]
+//       }
+//     ]);
   
-    const handleVote = (questionId : any, direction : any) => {
-      setQuestions(prev => prev.map(q => {
-        if (q.id === questionId) {
-          return {
-            ...q,
-            votes: direction === 'up' ? q.votes + 1 : q.votes - 1
-          };
-        }
-        return q;
-      }));
-    };
+//     const handleVote = (questionId : number, direction : string) => {
+//       setQuestions(prev => prev.map(q => {
+//         if (q.id === questionId) {
+//           return {
+//             ...q,
+//             votes: direction === 'up' ? q.votes + 1 : q.votes - 1
+//           };
+//         }
+//         return q;
+//       }));
+//     };
   
-    const handleAddQuestion = () => {
-      if (!newQuestion.title.trim() || !newQuestion.content.trim()) return;
+//     const handleAddQuestion = () => {
+//       if (!newQuestion.title.trim() || !newQuestion.content.trim()) return;
   
-      const question = {
-        id: Date.now(),
-        ...newQuestion,
-        author: "Current User",
-        timestamp: new Date().toISOString(),
-        votes: 0,
-        comments: []
-      };
+//       const question = {
+//         id: Date.now(),
+//         ...newQuestion,
+//         author: "Current User",
+//         timestamp: new Date().toISOString(),
+//         votes: 0,
+//         comments: []
+//       };
   
-      setQuestions(prev => [question, ...prev]);
-      setNewQuestion({ title: '', content: '', tags: [] });
-      setShowAskForm(false);
-    };
+//       setQuestions(prev => [question, ...prev]);
+//       setNewQuestion({ title: '', content: '', tags: [] });
+//       setShowAskForm(false);
+//     };
   
-    const QuestionForm = () => (
-      <div className="bg-white/5 rounded-lg p-6 mb-6">
-        <div className="space-y-4">
-          <input
-            type="text"
-            placeholder="Question title"
-            value={newQuestion.title}
-            onChange={(e) => setNewQuestion(prev => ({ ...prev, title: e.target.value }))}
-            className="w-full bg-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-1 focus:ring-purple-500/50"
-          />
-          <textarea
-            placeholder="Describe your question..."
-            value={newQuestion.content}
-            onChange={(e) => setNewQuestion(prev => ({ ...prev, content: e.target.value }))}
-            className="w-full bg-white/10 rounded-lg p-4 text-white resize-none h-32 focus:outline-none focus:ring-1 focus:ring-purple-500/50"
-          />
-          <div className="flex gap-2">
-                {['exam', 'assignments', 'concepts', 'general'].map(tag => (
-          <button
-            key={tag}
-            onClick={() => setNewQuestion((prev : any) => ({
-              ...prev,
-              tags: prev.tags.includes(tag)
-                ? prev.tags.filter((t : any) => t !== tag)
-                : [...prev.tags, tag]
-            }))}
-            className={`px-3 py-1 rounded-lg text-sm ${
-              newQuestion.tags.includes(tag)
-                ? 'bg-purple-600 text-white'
-                : 'bg-white/10 text-white/60 hover:bg-white/20'
-            }`}
-          >
-            {tag}
-    </button>
-      ))}      
-          </div>
-          <div className="flex justify-end gap-3">
-            <button
-              onClick={() => setShowAskForm(false)}
-              className="px-4 py-2 text-white/60 hover:text-white"
-            >
-              Cancel
-            </button>
-            <button
-              onClick={handleAddQuestion}
-              disabled={!newQuestion.title.trim() || !newQuestion.content.trim()}
-              className="px-4 py-2 bg-purple-600 rounded-lg hover:bg-purple-700 disabled:opacity-50 text-white"
-            >
-              Post Question
-            </button>
-          </div>
-        </div>
-      </div>
-    );
+//     const QuestionForm = () => (
+//       <div className="bg-white/5 rounded-lg p-6 mb-6">
+//         <div className="space-y-4">
+//           <input
+//             type="text"
+//             placeholder="Question title"
+//             value={newQuestion.title}
+//             onChange={(e) => setNewQuestion(prev => ({ ...prev, title: e.target.value }))}
+//             className="w-full bg-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-1 focus:ring-purple-500/50"
+//           />
+//           <textarea
+//             placeholder="Describe your question..."
+//             value={newQuestion.content}
+//             onChange={(e) => setNewQuestion(prev => ({ ...prev, content: e.target.value }))}
+//             className="w-full bg-white/10 rounded-lg p-4 text-white resize-none h-32 focus:outline-none focus:ring-1 focus:ring-purple-500/50"
+//           />
+//           <div className="flex gap-2">
+//                 {['exam', 'assignments', 'concepts', 'general'].map(tag => (
+//           <button
+//             key={tag}
+//             onClick={() => setNewQuestion((prev : any) => ({
+//               ...prev,
+//               tags: prev.tags.includes(tag)
+//                 ? prev.tags.filter((t : any) => t !== tag)
+//                 : [...prev.tags, tag]
+//             }))}
+//             className={`px-3 py-1 rounded-lg text-sm ${
+//               newQuestion.tags.includes(tag)
+//                 ? 'bg-purple-600 text-white'
+//                 : 'bg-white/10 text-white/60 hover:bg-white/20'
+//             }`}
+//           >
+//             {tag}
+//     </button>
+//       ))}      
+//           </div>
+//           <div className="flex justify-end gap-3">
+//             <button
+//               onClick={() => setShowAskForm(false)}
+//               className="px-4 py-2 text-white/60 hover:text-white"
+//             >
+//               Cancel
+//             </button>
+//             <button
+//               onClick={handleAddQuestion}
+//               disabled={!newQuestion.title.trim() || !newQuestion.content.trim()}
+//               className="px-4 py-2 bg-purple-600 rounded-lg hover:bg-purple-700 disabled:opacity-50 text-white"
+//             >
+//               Post Question
+//             </button>
+//           </div>
+//         </div>
+//       </div>
+//     );
 
 
-type Question = {
-  tags: string[];
-};
+// type Question = {
+//   tags: string[];
+// };
 
 
 
-const QuestionCard = ({ question, onVote } : {question : any, onVote : any}) => {
-    const [isExpanded, setIsExpanded] = useState(true); // Changed to default true
-    const [newComment, setNewComment] = useState('');
-    const [replyingTo, setReplyingTo] = useState(null);
-    const [replyContent, setReplyContent] = useState('');
+// const QuestionCard = ({ question, onVote } : {question : any, onVote : any}) => {
+//     const [isExpanded, setIsExpanded] = useState(true); // Changed to default true
+//     const [newComment, setNewComment] = useState('');
+//     const [replyingTo, setReplyingTo] = useState(null);
+//     const [replyContent, setReplyContent] = useState('');
   
-    const handleAddComment = (questionId : any) => {
-      if (!newComment.trim()) return;
+//     const handleAddComment = (questionId : any) => {
+//       if (!newComment.trim()) return;
   
-      const comment = {
-        id: Date.now(),
-        author: "Current User",
-        content: newComment,
-        timestamp: new Date().toISOString(),
-        likes: 0,
-        dislikes: 0,
-        replies: []
-      };
+//       const comment = {
+//         id: Date.now(),
+//         author: "Current User",
+//         content: newComment,
+//         timestamp: new Date().toISOString(),
+//         likes: 0,
+//         dislikes: 0,
+//         replies: []
+//       };
   
-      setQuestions(prev => prev.map(q => {
-        if (q.id === questionId) {
-          return {
-            ...q,
-            comments: [...q.comments, comment]
-          };
-        }
-        return q;
-      }));
+//       setQuestions(prev => prev.map(q => {
+//         if (q.id === questionId) {
+//           return {
+//             ...q,
+//             comments: [...q.comments, comment]
+//           };
+//         }
+//         return q;
+//       }));
   
-      setNewComment('');
-    };
+//       setNewComment('');
+//     };
   
-    const handleAddReply = (questionId : any, commentId : any) => {
-      if (!replyContent.trim()) return;
+//     const handleAddReply = (questionId : any, commentId : any) => {
+//       if (!replyContent.trim()) return;
   
-      const reply = {
-        id: Date.now(),
-        author: "Current User",
-        content: replyContent,
-        timestamp: new Date().toISOString(),
-        likes: 0,
-        dislikes: 0
-      };
+//       const reply = {
+//         id: Date.now(),
+//         author: "Current User",
+//         content: replyContent,
+//         timestamp: new Date().toISOString(),
+//         likes: 0,
+//         dislikes: 0
+//       };
   
-      setQuestions(prev => prev.map(q => {
-        if (q.id === questionId) {
-          return {
-            ...q,
-            comments: q.comments.map(c => {
-              if (c.id === commentId) {
-                return {
-                  ...c,
-                  replies: [...(c.replies || []), reply]
-                };
-              }
-              return c;
-            })
-          };
-        }
-        return q;
-      }));
+//       setQuestions(prev => prev.map(q => {
+//         if (q.id === questionId) {
+//           return {
+//             ...q,
+//             comments: q.comments.map(c => {
+//               if (c.id === commentId) {
+//                 return {
+//                   ...c,
+//                   replies: [...(c.replies || []), reply]
+//                 };
+//               }
+//               return c;
+//             })
+//           };
+//         }
+//         return q;
+//       }));
   
-      setReplyContent('');
-      setReplyingTo(null);
-    };
+//       setReplyContent('');
+//       setReplyingTo(null);
+//     };
   
-    return (
-      <div className="bg-white/5 hover:bg-white/10 rounded-lg transition-colors">
-        {/* Question Header */}
-        <div className="p-6">
-    <div className="flex gap-4">
-      {/* Voting */}
-      <div className="flex flex-col items-center gap-2">
-        <button 
-          onClick={() => onVote(question.id, 'up')}
-          className="text-white/60 hover:text-white transition-colors"
-        >
-          ▲
-        </button>
-        <span className="text-white font-medium">{question.votes}</span>
-        <button 
-          onClick={() => onVote(question.id, 'down')}
-          className="text-white/60 hover:text-white transition-colors"
-        >
-          ▼
-        </button>
-      </div>
+//     return (
+//       <div className="bg-white/5 hover:bg-white/10 rounded-lg transition-colors">
+//         {/* Question Header */}
+//         <div className="p-6">
+//     <div className="flex gap-4">
+//       {/* Voting */}
+//       <div className="flex flex-col items-center gap-2">
+//         <button 
+//           onClick={() => onVote(question.id, 'up')}
+//           className="text-white/60 hover:text-white transition-colors"
+//         >
+//           ▲
+//         </button>
+//         <span className="text-white font-medium">{question.votes}</span>
+//         <button 
+//           onClick={() => onVote(question.id, 'down')}
+//           className="text-white/60 hover:text-white transition-colors"
+//         >
+//           ▼
+//         </button>
+//       </div>
 
-      {/* Content */}
-      <div className="flex-1">
-        <h4 className="text-white font-medium text-lg mb-2">{question.title}</h4>
-        <p className="text-white/80 mb-4">{question.content}</p>
+//       {/* Content */}
+//       <div className="flex-1">
+//         <h4 className="text-white font-medium text-lg mb-2">{question.title}</h4>
+//         <p className="text-white/80 mb-4">{question.content}</p>
 
-        {/* Tags */}
-        <div className="flex flex-wrap gap-2 mb-4">
-          {question.tags.map((tag:  any, index : any) => (
-            <span
-              key={index}
-              className="text-xs px-2 py-1 rounded-full bg-purple-500/20 text-purple-300"
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
+//         {/* Tags */}
+//         <div className="flex flex-wrap gap-2 mb-4">
+//           {question.tags.map((tag:  any, index : any) => (
+//             <span
+//               key={index}
+//               className="text-xs px-2 py-1 rounded-full bg-purple-500/20 text-purple-300"
+//             >
+//               {tag}
+//             </span>
+//           ))}
+//         </div>
 
-        {/* Meta */}
-        <div className="flex justify-between items-center text-sm text-white/60">
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-full bg-purple-600 flex items-center justify-center">
-              <span className="text-white text-xs">{question.author[0]}</span>
-            </div>
-            <span>{question.author}</span>
-            <span>•</span>
-            <span>{new Date(question.timestamp).toLocaleDateString()}</span>
-          </div>
-          <button 
-            onClick={() => setIsExpanded(!isExpanded)}
-            className="text-purple-400 hover:text-purple-300 flex items-center gap-2"
-          >
-            {question.comments.length} comments
-            <span className="text-xs">{isExpanded ? '▼' : '▶'}</span>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
+//         {/* Meta */}
+//         <div className="flex justify-between items-center text-sm text-white/60">
+//           <div className="flex items-center gap-2">
+//             <div className="w-6 h-6 rounded-full bg-purple-600 flex items-center justify-center">
+//               <span className="text-white text-xs">{question.author[0]}</span>
+//             </div>
+//             <span>{question.author}</span>
+//             <span>•</span>
+//             <span>{new Date(question.timestamp).toLocaleDateString()}</span>
+//           </div>
+//           <button 
+//             onClick={() => setIsExpanded(!isExpanded)}
+//             className="text-purple-400 hover:text-purple-300 flex items-center gap-2"
+//           >
+//             {question.comments.length} comments
+//             <span className="text-xs">{isExpanded ? '▼' : '▶'}</span>
+//           </button>
+//         </div>
+//       </div>
+//     </div>
+//   </div>
 
   
-      {/* Comments Section */}
-      {isExpanded && (
-        <div className="border-t border-white/10 p-6">
-          {/* Comment Input */}
-          <div className="flex gap-3 mb-6">
-            <div className="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center">
-              <span className="text-white text-sm">U</span>
-            </div>
-            <div className="flex-1">
-              <textarea
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
-                placeholder="Add to the discussion..."
-                className="w-full bg-white/10 rounded-lg p-3 text-white text-sm resize-none focus:outline-none focus:ring-1 focus:ring-purple-500/50"
-                // rows="2"
-              />
-              <div className="flex justify-end gap-2 mt-2">
-                <button
-                  onClick={() => setNewComment('')}
-                  className="px-3 py-1.5 text-white/60 hover:text-white text-sm"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={() => handleAddComment(question.id)}
-                  disabled={!newComment.trim()}
-                  className="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-sm rounded-lg disabled:opacity-50"
-                >
-                  Comment
-                </button>
-              </div>
-            </div>
-          </div>
+//       {/* Comments Section */}
+//       {isExpanded && (
+//         <div className="border-t border-white/10 p-6">
+//           {/* Comment Input */}
+//           <div className="flex gap-3 mb-6">
+//             <div className="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center">
+//               <span className="text-white text-sm">U</span>
+//             </div>
+//             <div className="flex-1">
+//               <textarea
+//                 value={newComment}
+//                 onChange={(e) => setNewComment(e.target.value)}
+//                 placeholder="Add to the discussion..."
+//                 className="w-full bg-white/10 rounded-lg p-3 text-white text-sm resize-none focus:outline-none focus:ring-1 focus:ring-purple-500/50"
+//                 // rows="2"
+//               />
+//               <div className="flex justify-end gap-2 mt-2">
+//                 <button
+//                   onClick={() => setNewComment('')}
+//                   className="px-3 py-1.5 text-white/60 hover:text-white text-sm"
+//                 >
+//                   Cancel
+//                 </button>
+//                 <button
+//                   onClick={() => handleAddComment(question.id)}
+//                   disabled={!newComment.trim()}
+//                   className="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-sm rounded-lg disabled:opacity-50"
+//                 >
+//                   Comment
+//                 </button>
+//               </div>
+//             </div>
+//           </div>
 
-          {/* Comments List */}
-          <div className="space-y-4">
-            {question.comments.map((comment : any) => (
-              <div key={comment.id} className="flex gap-3 group">
-                <div className="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center">
-                  <span className="text-white text-sm">{comment.author[0]}</span>
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="font-medium text-white">{comment.author}</span>
-                    <span className="text-sm text-white/60">
-                      {new Date(comment.timestamp).toLocaleDateString()}
-                    </span>
-                  </div>
-                  <p className="text-white/80 text-sm mb-2">{comment.content}</p>
+//           {/* Comments List */}
+//           <div className="space-y-4">
+//             {question.comments.map((comment : any) => (
+//               <div key={comment.id} className="flex gap-3 group">
+//                 <div className="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center">
+//                   <span className="text-white text-sm">{comment.author[0]}</span>
+//                 </div>
+//                 <div className="flex-1">
+//                   <div className="flex items-center gap-2 mb-1">
+//                     <span className="font-medium text-white">{comment.author}</span>
+//                     <span className="text-sm text-white/60">
+//                       {new Date(comment.timestamp).toLocaleDateString()}
+//                     </span>
+//                   </div>
+//                   <p className="text-white/80 text-sm mb-2">{comment.content}</p>
                   
-                  {/* Comment Actions */}
-                  <div className="flex items-center gap-4">
-                    <button className="text-white/60 hover:text-white text-sm flex items-center gap-1">
-                      <BiLike size={16} />
-                      <span>{comment.likes}</span>
-                    </button>
-                    <button className="text-white/60 hover:text-white text-sm flex items-center gap-1">
-                      <BiDislike size={16} />
-                      <span>{comment.dislikes}</span>
-                    </button>
-                    <button 
-                      onClick={() => setReplyingTo(comment.id)}
-                      className="text-white/60 hover:text-white text-sm"
-                    >
-                      Reply
-                    </button>
-                  </div>
+//                   {/* Comment Actions */}
+//                   <div className="flex items-center gap-4">
+//                     <button className="text-white/60 hover:text-white text-sm flex items-center gap-1">
+//                       <BiLike size={16} />
+//                       <span>{comment.likes}</span>
+//                     </button>
+//                     <button className="text-white/60 hover:text-white text-sm flex items-center gap-1">
+//                       <BiDislike size={16} />
+//                       <span>{comment.dislikes}</span>
+//                     </button>
+//                     <button 
+//                       onClick={() => setReplyingTo(comment.id)}
+//                       className="text-white/60 hover:text-white text-sm"
+//                     >
+//                       Reply
+//                     </button>
+//                   </div>
 
-                  {/* Reply Input */}
-                  {replyingTo === comment.id && (
-                    <div className="mt-3 pl-6">
-                      <div className="flex gap-3">
-                        <div className="w-6 h-6 rounded-full bg-purple-600 flex items-center justify-center">
-                          <span className="text-white text-xs">U</span>
-                        </div>
-                        <div className="flex-1">
-                          <textarea
-                            value={replyContent}
-                            onChange={(e) => setReplyContent(e.target.value)}
-                            placeholder="Write a reply..."
-                            className="w-full bg-white/10 rounded-lg p-3 text-white text-sm resize-none focus:outline-none focus:ring-1 focus:ring-purple-500/50"
-                            // rows="2"
-                          />
-                          <div className="flex justify-end gap-2 mt-2">
-                            <button
-                              onClick={() => {
-                                setReplyingTo(null);
-                                setReplyContent('');
-                              }}
-                              className="px-3 py-1.5 text-white/60 hover:text-white text-sm"
-                            >
-                              Cancel
-                            </button>
-                            <button
-                              onClick={() => handleAddReply(question.id, comment.id)}
-                              disabled={!replyContent.trim()}
-                              className="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-sm rounded-lg disabled:opacity-50"
-                            >
-                              Reply
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
+//                   {/* Reply Input */}
+//                   {replyingTo === comment.id && (
+//                     <div className="mt-3 pl-6">
+//                       <div className="flex gap-3">
+//                         <div className="w-6 h-6 rounded-full bg-purple-600 flex items-center justify-center">
+//                           <span className="text-white text-xs">U</span>
+//                         </div>
+//                         <div className="flex-1">
+//                           <textarea
+//                             value={replyContent}
+//                             onChange={(e) => setReplyContent(e.target.value)}
+//                             placeholder="Write a reply..."
+//                             className="w-full bg-white/10 rounded-lg p-3 text-white text-sm resize-none focus:outline-none focus:ring-1 focus:ring-purple-500/50"
+//                             // rows="2"
+//                           />
+//                           <div className="flex justify-end gap-2 mt-2">
+//                             <button
+//                               onClick={() => {
+//                                 setReplyingTo(null);
+//                                 setReplyContent('');
+//                               }}
+//                               className="px-3 py-1.5 text-white/60 hover:text-white text-sm"
+//                             >
+//                               Cancel
+//                             </button>
+//                             <button
+//                               onClick={() => handleAddReply(question.id, comment.id)}
+//                               disabled={!replyContent.trim()}
+//                               className="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-sm rounded-lg disabled:opacity-50"
+//                             >
+//                               Reply
+//                             </button>
+//                           </div>
+//                         </div>
+//                       </div>
+//                     </div>
+//                   )}
 
-                  {/* Nested Replies */}
-                  {comment.replies && comment.replies.length > 0 && (
-                    <div className="mt-3 pl-6 space-y-3 border-l border-white/10">
-                      {comment.replies.map((reply : any) => (
-                        <div key={reply.id} className="flex gap-3 group">
-                          <div className="w-6 h-6 rounded-full bg-purple-600 flex items-center justify-center">
-                            <span className="text-white text-xs">{reply.author[0]}</span>
-                          </div>
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-1">
-                              <span className="font-medium text-white">{reply.author}</span>
-                              <span className="text-sm text-white/60">
-                                {new Date(reply.timestamp).toLocaleDateString()}
-                              </span>
-                            </div>
-                            <p className="text-white/80 text-sm mb-2">{reply.content}</p>
+//                   {/* Nested Replies */}
+//                   {comment.replies && comment.replies.length > 0 && (
+//                     <div className="mt-3 pl-6 space-y-3 border-l border-white/10">
+//                       {comment.replies.map((reply : any) => (
+//                         <div key={reply.id} className="flex gap-3 group">
+//                           <div className="w-6 h-6 rounded-full bg-purple-600 flex items-center justify-center">
+//                             <span className="text-white text-xs">{reply.author[0]}</span>
+//                           </div>
+//                           <div className="flex-1">
+//                             <div className="flex items-center gap-2 mb-1">
+//                               <span className="font-medium text-white">{reply.author}</span>
+//                               <span className="text-sm text-white/60">
+//                                 {new Date(reply.timestamp).toLocaleDateString()}
+//                               </span>
+//                             </div>
+//                             <p className="text-white/80 text-sm mb-2">{reply.content}</p>
                             
-                            {/* Reply Actions */}
-                            <div className="flex items-center gap-4">
-                              <button className="text-white/60 hover:text-white text-sm flex items-center gap-1">
-                                <BiLike size={16} />
-                                <span>{reply.likes}</span>
-                              </button>
-                              <button className="text-white/60 hover:text-white text-sm flex items-center gap-1">
-                                <BiDislike size={16} />
-                                <span>{reply.dislikes}</span>
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
+//                             {/* Reply Actions */}
+//                             <div className="flex items-center gap-4">
+//                               <button className="text-white/60 hover:text-white text-sm flex items-center gap-1">
+//                                 <BiLike size={16} />
+//                                 <span>{reply.likes}</span>
+//                               </button>
+//                               <button className="text-white/60 hover:text-white text-sm flex items-center gap-1">
+//                                 <BiDislike size={16} />
+//                                 <span>{reply.dislikes}</span>
+//                               </button>
+//                             </div>
+//                           </div>
+//                         </div>
+//                       ))}
+//                     </div>
+//                   )}
+//                 </div>
+//               </div>
+//             ))}
+//           </div>
+//         </div>
+//       )}
+//     </div>
+//   );
+// }
   
-    return (
-      <div className="h-[800px] flex flex-col bg-gray-900">
-        {/* Header */}
-        <div className="flex justify-between items-center p-6 sticky top-0 bg-gray-900 border-b border-white/10">
-          <h3 className="text-white font-semibold text-xl">Q&A Forum</h3>
-          <button
-            onClick={() => setShowAskForm(true)}
-            className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors"
-          >
-            Ask a Question
-          </button>
-        </div>
+//     return (
+//       <div className="h-[800px] flex flex-col bg-gray-900">
+//         {/* Header */}
+//         <div className="flex justify-between items-center p-6 sticky top-0 bg-gray-900 border-b border-white/10">
+//           <h3 className="text-white font-semibold text-xl">Q&A Forum</h3>
+//           <button
+//             onClick={() => setShowAskForm(true)}
+//             className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors"
+//           >
+//             Ask a Question
+//           </button>
+//         </div>
   
-        {/* Main Content - Scrollable */}
-        <div className="flex-1 overflow-y-auto custom-scrollbar p-6">
-          {showAskForm && <QuestionForm />}
+//         {/* Main Content - Scrollable */}
+//         <div className="flex-1 overflow-y-auto custom-scrollbar p-6">
+//           {showAskForm && <QuestionForm />}
   
-          {/* Search and Filters */}
-          <div className="flex flex-col md:flex-row gap-4 mb-6">
-            <div className="flex-1">
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="Search questions..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-white/10 text-white rounded-lg px-4 py-2 pl-10"
-                />
-                <IoSearchOutline className="absolute left-3 top-1/2 -translate-y-1/2 text-white/60" />
-              </div>
-            </div>
-            <div className="flex gap-2">
-              {['all', 'exam', 'assignments', 'concepts'].map((tag) => (
-                <button
-                  key={tag}
-                  onClick={() => setSelectedTag(tag)}
-                  className={`px-3 py-1 rounded-lg text-sm ${
-                    selectedTag === tag
-                      ? 'bg-purple-600 text-white'
-                      : 'bg-white/10 text-white/60 hover:bg-white/20'
-                  }`}
-                >
-                  {tag.charAt(0).toUpperCase() + tag.slice(1)}
-                </button>
-              ))}
-            </div>
-          </div>
+//           {/* Search and Filters */}
+//           <div className="flex flex-col md:flex-row gap-4 mb-6">
+//             <div className="flex-1">
+//               <div className="relative">
+//                 <input
+//                   type="text"
+//                   placeholder="Search questions..."
+//                   value={searchQuery}
+//                   onChange={(e) => setSearchQuery(e.target.value)}
+//                   className="w-full bg-white/10 text-white rounded-lg px-4 py-2 pl-10"
+//                 />
+//                 <IoSearchOutline className="absolute left-3 top-1/2 -translate-y-1/2 text-white/60" />
+//               </div>
+//             </div>
+//             <div className="flex gap-2">
+//               {['all', 'exam', 'assignments', 'concepts'].map((tag) => (
+//                 <button
+//                   key={tag}
+//                   onClick={() => setSelectedTag(tag)}
+//                   className={`px-3 py-1 rounded-lg text-sm ${
+//                     selectedTag === tag
+//                       ? 'bg-purple-600 text-white'
+//                       : 'bg-white/10 text-white/60 hover:bg-white/20'
+//                   }`}
+//                 >
+//                   {tag.charAt(0).toUpperCase() + tag.slice(1)}
+//                 </button>
+//               ))}
+//             </div>
+//           </div>
   
-          {/* Questions List */}
-          <div className="space-y-4">
-            {questions
-              .filter(q => 
-                selectedTag === 'all' || q.tags.includes(selectedTag)
-              )
-              .filter(q =>
-                searchQuery
-                  ? q.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                    q.content.toLowerCase().includes(searchQuery.toLowerCase())
-                  : true
-              )
-              .map((question) => (
-                <QuestionCard
-                  key={question.id}
-                  question={question}
-                  onVote={handleVote}
-                />
-              ))}
-          </div>
-        </div>
+//           {/* Questions List */}
+//           <div className="space-y-4">
+//             {questions
+//               .filter(q => 
+//                 selectedTag === 'all' || q.tags.includes(selectedTag)
+//               )
+//               .filter(q =>
+//                 searchQuery
+//                   ? q.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+//                     q.content.toLowerCase().includes(searchQuery.toLowerCase())
+//                   : true
+//               )
+//               .map((question) => (
+//                 <QuestionCard
+//                   key={question.id}
+//                   question={question}
+//                   onVote={handleVote}
+//                 />
+//               ))}
+//           </div>
+//         </div>
   
-        {/* Custom Scrollbar Styles */}
-        <style jsx>{`
-          .custom-scrollbar::-webkit-scrollbar {
-            width: 8px;
-          }
-          .custom-scrollbar::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-          }
-          .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 4px;
-          }
-          .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.3);
-          }
-        `}</style>
-      </div>
-    );
-  };
+//         {/* Custom Scrollbar Styles */}
+//         <style jsx>{`
+//           .custom-scrollbar::-webkit-scrollbar {
+//             width: 8px;
+//           }
+//           .custom-scrollbar::-webkit-scrollbar-track {
+//             background: rgba(255, 255, 255, 0.1);
+//             border-radius: 4px;
+//           }
+//           .custom-scrollbar::-webkit-scrollbar-thumb {
+//             background: rgba(255, 255, 255, 0.2);
+//             border-radius: 4px;
+//           }
+//           .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+//             background: rgba(255, 255, 255, 0.3);
+//           }
+//         `}</style>
+//       </div>
+//     );
+//   };
 
 
 
 export default SubjectRating;
 
 
-const subject = 
+const subject : Subject = 
   {
     id: 1,
     name: 'Machine Learning',
@@ -984,23 +985,23 @@ const subject =
             "Understanding of ML algorithms and mathematics"
           ]
         },
-        {
-          role: "Data Scientist",
-          relevance: 85,
-          skills: ["Python", "R", "SQL", "Statistical Analysis"],
-          companies: ["Netflix", "Uber", "LinkedIn", "IBM"],
-          salary: {
-            entry: "$85,000 - $110,000",
-            experienced: "$110,000 - $160,000",
-            senior: "$140,000 - $200,000"
-          },
-          growth: {
-            rate: "20%",
-            description: "Faster than average",
-            timeframe: "2023-2028"
-          },
-          description: "Data Scientists analyze complex data sets to help organizations make informed decisions."
-        }
+        // {
+        //   role: "Data Scientist",
+        //   relevance: 85,
+        //   skills: ["Python", "R", "SQL", "Statistical Analysis"],
+        //   companies: ["Netflix", "Uber", "LinkedIn", "IBM"],
+        //   salary: {
+        //     entry: "$85,000 - $110,000",
+        //     experienced: "$110,000 - $160,000",
+        //     senior: "$140,000 - $200,000"
+        //   },
+        //   growth: {
+        //     rate: "20%",
+        //     description: "Faster than average",
+        //     timeframe: "2023-2028"
+        //   },
+        //   description: "Data Scientists analyze complex data sets to help organizations make informed decisions."
+        // }
       ],
       industryProjects: [
         {
@@ -1050,3 +1051,150 @@ const subject =
       }
     }
   };
+  interface AssessmentReview {
+    rating: number;
+    difficulty: number;
+    timeSpent: string;
+    comment: string;
+    helpful: number;
+  }
+  
+  interface Assessment {
+    type: string;
+    weight: string;
+    description: string;
+    dueWeek: string;
+    learningOutcomes?: string[];
+    requirements?: string;
+    format?: string;
+    duration?: string;
+    reviews: AssessmentReview[];
+  }
+  
+  interface Offering {
+    semesters: string[];
+    nextOffering: string;
+    duration: string;
+    deliveryMode: string;
+    classSchedule: {
+      lectures: string;
+      tutorials: string;
+      practicals: string;
+    };
+  }
+  
+  interface Ratings {
+    overall: number;
+    difficulty: number;
+    workload: number;
+    teaching: number;
+    content: number;
+  }
+  
+  interface Recommendation {
+    id: number;
+    name: string;
+    similarity: string;
+  }
+  
+  interface QAAnswer {
+    id: number;
+    content: string;
+    author: {
+      id: string;
+      name: string;
+      avatar: string;
+      reputation?: number;
+    };
+    timestamp: string;
+    isAccepted: boolean;
+    votes: number;
+  }
+  
+  interface QAQuestion {
+    id: number;
+    title: string;
+    content: string;
+    author: {
+      id: string;
+      name: string;
+      avatar: string;
+    };
+    timestamp: string;
+    votes: number;
+    views: number;
+    answers: QAAnswer[];
+    tags: string[];
+  }
+  
+  interface QAModule {
+    questions: QAQuestion[];
+    popularTags: { name: string; count: number }[];
+  }
+  
+  interface CareerPath {
+    role: string;
+    relevance: number;
+    skills: string[];
+    companies: string[];
+    salary: {
+      entry: string;
+      experienced: string;
+      senior: string;
+    };
+    growth: {
+      rate: string;
+      description: string;
+      timeframe: string;
+    };
+    description: string;
+    requirements: string[];
+  }
+  
+  interface IndustryProject {
+    company: string;
+    project: string;
+    skills: string[];
+    description: string;
+    duration: string;
+    outcome: string;
+    technologies: string[];
+  }
+  
+  interface SkillsMapping {
+    technical: {
+      name: string;
+      relevance: number;
+      subskills: string[];
+    }[];
+    soft: {
+      name: string;
+      relevance: number;
+      description: string;
+    }[];
+  }
+  
+  interface CareerModule {
+    paths: CareerPath[];
+    industryProjects: IndustryProject[];
+    skillsMapping: SkillsMapping;
+  }
+  
+  interface Subject {
+    id: number;
+    name: string;
+    code: string;
+    professor: string;
+    area: string;
+    description: string;
+    offering: Offering;
+    ratings: Ratings;
+    prerequisites: string[];
+    learningResources: string[];
+    assessments: Assessment[];
+    recommendations: Recommendation[];
+    reviews: any[];
+    skills: string[];
+    qa: QAModule;
+    career: CareerModule;
+  }

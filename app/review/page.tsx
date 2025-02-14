@@ -2,7 +2,6 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { HorizontalScroll } from "@/components/Slider";
-import axios from "axios";
 import api from "@/lib/api";
 
 function Review(){

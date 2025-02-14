@@ -17,12 +17,7 @@ interface UnitData {
   assessments: string[]; 
   prerequisites: string[];
   postrequisites: string[]; 
-  reviews: any[];
-}
-interface UnitCode {
-  code: string;
-  name: string;
-  description?: string;
+  reviews: string[];
 }
 
 interface LearningOutcome {

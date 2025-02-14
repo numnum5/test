@@ -1,9 +1,7 @@
 'use client'
-import React, { useEffect } from 'react'
+import React, { useEffect,useState } from 'react'
 import { Search } from 'lucide-react'
 import { Input } from '@/components/ui/input'
-import { useState } from "react";
-import { useSearchParams } from "next/navigation"; // for getting query params
 import { Unit } from '@/components/Slider'
 import axios from 'axios';
 import {
@@ -81,13 +79,8 @@ function SearchBar({setQuery} : SearchBarProps){
 
 
 
-const page = () => {
-  const searchParams = useSearchParams();
-  // const query = searchParams.get("query") || ""; // Get query from URL or default to empty string
+const Page = () => {
   const [query, setQuery] = useState("");
-
-
-
   return (
     <div className="">
       {/* Navbar and other content */}
@@ -122,19 +115,6 @@ const page = () => {
   );
 };
 
-// Data for grid content
-const units = [
-  { title: "Microprocessor and digital systems", unitCode: "CAB202" },
-  { title: "Data Structures and Algorithms", unitCode: "IT202" },
-  { title: "Database Systems", unitCode: "IT305" },
-  { title: "Operating Systems", unitCode: "CS210" },
-  { title: "Computer Networks", unitCode: "CS320" },
-  { title: "Software Engineering", unitCode: "SE402" },
-  { title: "Artificial Intelligence", unitCode: "AI450" },
-  { title: "Web Development", unitCode: "WD230" },
-  { title: "Cloud Computing", unitCode: "CC310" },
-  { title: "Cyber Security", unitCode: "CY400" },
-];
 
 interface GridContentProps {
   query: string;
@@ -153,7 +133,7 @@ interface UnitData {
   assessments: string[]; 
   prerequisites: string[];
   postrequisites: string[]; 
-  reviews: any[];
+  reviews: string[];
 }
 function GridContent({ query }: GridContentProps) {
   const [units, setUnits] = useState([]);
@@ -182,8 +162,9 @@ function GridContent({ query }: GridContentProps) {
 
   return (
     <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
-     {units.map((unit : any) => (
+     {units.map((unit : UnitData) => (
         <Unit
+          key={unit.unitCode}
           unit={unit}
         />
 
@@ -191,5 +172,5 @@ function GridContent({ query }: GridContentProps) {
     </div>
   );
 }
-export default page;
+export default Page;
 

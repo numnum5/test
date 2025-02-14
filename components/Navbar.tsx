@@ -1,7 +1,6 @@
 'use client'
-
 import NavbarItem from "./NavbarItem";
-import { BsChevronDown, BsSearch, BsBell } from "react-icons/bs";
+import { BsChevronDown } from "react-icons/bs";
 import { useCallback, useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 import { MdOutlineLightMode } from "react-icons/md";
@@ -10,6 +9,7 @@ import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { FaUserAlt } from 'react-icons/fa';
 import { signOut, useSession } from "next-auth/react";
+// import Image from "next/image";
 const TOP_OFFSET = 66;
 
 const Navbar = () => {
@@ -58,7 +58,7 @@ const Navbar = () => {
     return(
         <nav className="w-full fixed z-40">
             <div className={`px-4 md:px-16 py-6 flex flex-row items-center transition duration-500 bg-zinc-900 bg-opacity-40 backdrop-blur-l ${showBackground ? "bg-zinc-900 bg-opacity-90" : ""}`}>
-                <img className="h-4 lg:h-7" src="/images/logo.png" alt="Logo"/>
+                {/* <Image className="h-4 lg:h-7" src="" alt="Logo"/> */}
                 <div className="flex-row ml-8 gap-7 hidden lg:flex">
                     <NavbarItem label="Home" link="/"/>
                     <NavbarItem label="Reviews" link="/review"/>

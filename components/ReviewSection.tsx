@@ -16,7 +16,7 @@ interface UnitData {
   assessments: string[]; 
   prerequisites: string[];
   postrequisites: string[]; 
-  reviews: any[];
+  reviews: string[];
 }
 
 interface ReviewData {
@@ -39,12 +39,8 @@ interface ReviewData {
 
 export const RevisedReviewSection = ({unit} : {unit : UnitData}) =>  {
 
-
-  const [reviews, setReviews] = useState([]);
+  const [reviews, setReviews] = useState<ReviewData[]>([]);
   
-
-  // console.log(unitCode);
-  // const unitCode = 'CAB202';
   const fetchReviews = async () => {
     try{
       console.log("fetching!!");
@@ -81,9 +77,9 @@ export const RevisedReviewSection = ({unit} : {unit : UnitData}) =>  {
             {/* Main Content - Scrollable */}
             <div className="flex-1 overflow-y-auto custom-scrollbar p-6">
 
-              {reviews.map(review => (
+              {reviews.map((review : ReviewData) => (
 
-                <ReviewCard review={review}/>
+                <ReviewCard key={review.id} review={review}/>
 
               ))}
               

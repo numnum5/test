@@ -34,7 +34,7 @@ const Login = () => {
     try {
       if (isSignUp) {
         // Handle signup - requires email, username, and password
-        const result = await axios.post("http://localhost:5280/api/auth/register", {
+        await axios.post("http://localhost:5280/api/auth/register", {
           username : formData.username,
           password : formData.password,
           email : formData.email
@@ -60,6 +60,7 @@ const Login = () => {
         }
       }
     } catch (err) {
+      console.log(err);
       setError("에러 생김 ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ");
     } finally {
       setIsLoading(false);

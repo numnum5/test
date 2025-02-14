@@ -7,7 +7,6 @@ import {
   GitBranch,
   Github,
   MessageSquare,
-  StepForwardIcon as Progress,
   Star,
   Users,
   CheckCircle2,

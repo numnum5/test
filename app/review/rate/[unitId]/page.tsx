@@ -2,7 +2,8 @@
 import { useState, useEffect, FormEvent } from 'react';
 import { Slider } from "@/components/ui/slider";
 import axios from 'axios';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import React from 'react'
 
 interface RatingMetric {
@@ -28,7 +29,7 @@ interface UnitData {
   assessments: string[]; 
   prerequisites: string[];
   postrequisites: string[]; 
-  reviews: any[];
+  reviews: string[];
 }
 
 interface RatingData{
@@ -40,6 +41,19 @@ interface RatingData{
 }
 
  const ReviewSubmissionForm = () => {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/login"); // Redirect to login page
+    }
+  }, [status, router]);
+
+  if (status === "loading") {
+    return <p>Loading...</p>;
+  }
+
   const params = useParams();
   const unitId = params.unitId;
   // const [semester, setSemester] = useState('');
@@ -91,13 +105,13 @@ interface RatingData{
     }
   ]);
   
-  const semesterOptions = [
-    { value: '2024S2', label: 'Semester 2, 2024' },
-    { value: '2024S1', label: 'Semester 1, 2024' },
-    { value: '2023S2', label: 'Semester 2, 2023' },
-    { value: '2023S1', label: 'Semester 1, 2023' },
-    { value: '2022S2', label: 'Semester 2, 2022' },
-  ];
+  // const semesterOptions = [
+  //   { value: '2024S2', label: 'Semester 2, 2024' },
+  //   { value: '2024S1', label: 'Semester 1, 2024' },
+  //   { value: '2023S2', label: 'Semester 2, 2023' },
+  //   { value: '2023S1', label: 'Semester 1, 2023' },
+  //   { value: '2022S2', label: 'Semester 2, 2022' },
+  // ];
   
 
   const fetchRatings = async () => {
@@ -132,7 +146,7 @@ interface RatingData{
     // console.log("ADADD");
     fetchRatings();
     fetchInfo();
-  }, [])
+  }, [unitId])
 
   useEffect(() => {
     // For negative metrics, invert the score (10 - value) before averaging
@@ -157,27 +171,43 @@ interface RatingData{
     e.preventDefault();
 
     try{
-      await axios.post("http://localhost:5280/api/review/", {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(
-            {
-                // unitCode: unitId,
-                // username: session.user.username,
-                // overallRating: metrics
-                // "contentRating": 4.0,
-                // "teachingRating": 1.1,
-                // "difficultyRating": 3.5,
-                // "workloadRating": 3.0,
-                // comment: comment,
-                // timestamp: new Date(),
-            })
 
-      });        
+      const formattedMetrics = metrics.reduce((acc, metric) => {
+        acc[`${metric.name}Rating`] = metric.value;
+        return acc;
+      }, {} as Record<string, number>);
+  
+      // Construct the payload
+      const payload = {
+        unitCode: unitId,
+        username: session?.user?.username, // Ensure session exists before accessing user data
+        overallRating: averageRating, 
+        comment: comment,
+        timestamp: new Date().toISOString(),
+        ...formattedMetrics, // Spread the formatted metrics
+      };
+  
+      // await axios.post("http://localhost:5280/api/review/", {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify(
+      //       {
+      //           // unitCode: unitId,
+      //           // username: session.user.username,
+      //           // overallRating: metrics
+      //           // "contentRating": 4.0,
+      //           // "teachingRating": 1.1,
+      //           // "difficultyRating": 3.5,
+      //           // "workloadRating": 3.0,
+      //           // comment: comment,
+      //           // timestamp: new Date(),
+      //       })
+
+      // });        
 
       // console.log(data);
     }catch(error){
-
+      console.log(error)
     }
   }
     

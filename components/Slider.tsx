@@ -9,7 +9,7 @@ import Link from 'next/link';
 
 interface HorizontalScrollProps {
   category : string;
-  subjects : Unit[];
+  subjects : UnitData[];
 
 }
 
@@ -103,20 +103,27 @@ export const HorizontalScroll = ({category, subjects} : HorizontalScrollProps) =
 };
 
 
-interface Unit {
-  unitCode : string,
-  unitName : string,
-  description : string,
-  rating : number,
-  prerequisites : string[],
-}
 
+interface UnitData {
+  id: string;
+  unitCode: string;
+  unitName: string;
+  faculty: string;
+  description: string;
+  area: string;
+  content: string[]; 
+  weeklyTopics: string[];
+  assessments: string[]; 
+  prerequisites: string[];
+  postrequisites: string[]; 
+  reviews: string[];
+}
 interface UnitProps {
-  unit: Unit;
+  unit: UnitData;
   scrollRef?: RefObject<HTMLDivElement | null>;
 }
 export const Unit = ({ unit, scrollRef}: UnitProps) => {
-  const { unitCode, unitName, description, rating, prerequisites } = unit;
+  const { unitCode, unitName, description, prerequisites } = unit;
   const [isHovered, setIsHovered] = useState(false);
   const [position, setPosition] = useState({ top: 0, left: 0, width: 0 });
   const cardRef = useRef<HTMLDivElement>(null);
@@ -266,7 +273,7 @@ export const Unit = ({ unit, scrollRef}: UnitProps) => {
                   {/* Quick Stats */}
                   <div className="grid grid-cols-3 gap-2">
                     <div className="bg-white/5 rounded-lg p-2 text-center">
-                      <p className="text-cyan-400 text-lg font-semibold">{rating}</p>
+                      <p className="text-cyan-400 text-lg font-semibold">1/10</p>
                       <p className="text-white/60 text-xs">Rating</p>
                     </div>
                     <div className="bg-white/5 rounded-lg p-2 text-center">

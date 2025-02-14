@@ -1,8 +1,8 @@
 'use client'
 import React, { useState } from 'react';
-import { IoSchoolOutline, IoChatbubbleEllipsesOutline, IoSearchOutline } from 'react-icons/io5';
-import { FaRobot, FaCode, FaDatabase, FaBrain } from 'react-icons/fa';
-import { BsCpu, BsBarChartFill, BsFileEarmarkCode } from 'react-icons/bs';
+import { IoChatbubbleEllipsesOutline, IoSearchOutline } from 'react-icons/io5';
+import { FaDatabase, FaBrain } from 'react-icons/fa';
+import { BsFileEarmarkCode } from 'react-icons/bs';
 
 const AIHelp = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -102,7 +102,7 @@ const AIHelp = () => {
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-white mb-4">AI Learning Assistants</h1>
           <p className="text-white/60 max-w-2xl mx-auto mb-8">
-            Choose your unit's AI tutor for personalized learning assistance
+            Choose your unit&aposs AI tutor for personalized learning assistance
           </p>
 
           {/* Search Bar */}
@@ -186,7 +186,7 @@ const AIHelp = () => {
         {/* No Results Message */}
         {filteredAIs.length === 0 && (
           <div className="text-center text-white/60 mt-8">
-            No AI tutors found for "{searchTerm}"
+            No AI tutors found for &quot{searchTerm}&quot
           </div>
         )}
       </div>
