@@ -8,12 +8,6 @@ import { signIn } from 'next-auth/react';
 import axios from 'axios';
 
 
-
-/**
- * Documentation can go fuckthemselves
- * @returns 
- * 
- */
 const Login = () => {
   const [formData, setFormData] = useState({
     email: '',
