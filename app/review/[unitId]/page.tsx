@@ -6,9 +6,9 @@ import { RecommendationsSection } from '@/components/recommendation';
 import { ResourcesSection } from '@/components/resources';
 import { SubjectDetails } from '@/components/unitDetails';
 import { useParams } from 'next/navigation';
-import axios from 'axios';
 import { motion } from 'framer-motion';
 import { RevisedReviewSection } from '@/components/ReviewSection';
+import api from '@/lib/api';
 // import { IoSearchOutline } from 'react-icons/io5';
 // import { BiLike, BiDislike } from 'react-icons/bi';
 // import { GetServerSideProps } from 'next';
@@ -48,7 +48,7 @@ const SubjectRating = () => {
   const fetchData = async () => {
     try{
       
-      const {data} = await axios.get(`http://localhost:5280/api/units/${unitId}`);
+      const {data} = await api.get(`/units/${unitId}`);
       console.log("subject: ", data);
       setSubject(data);
     
@@ -61,7 +61,7 @@ const SubjectRating = () => {
   const fetchRatings = async () => {
     try{
       
-      const {data} = await axios.get(`http://localhost:5280/api/review/rating/${unitId}`);
+      const {data} = await api.get(`/review/rating/${unitId}`);
       console.log(data);
       setRating(data);
     

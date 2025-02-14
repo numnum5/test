@@ -1,10 +1,10 @@
 'use client';
 import { useState, useEffect, FormEvent } from 'react';
 import { Slider } from "@/components/ui/slider";
-import axios from 'axios';
 import { useParams, useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import React from 'react'
+import api from "@/lib/api";
 
 interface RatingMetric {
   name: string;
@@ -141,7 +141,7 @@ interface RatingData{
   const fetchRatings = async () => {
     try{
       console.log("fetching!!");
-      const {data} = await axios.get(`http://localhost:5280/api/review/rating/${unitId}`);
+      const {data} = await api.get(`/review/rating/${unitId}`);
       console.log(data);
       setRating(data);
     
@@ -155,7 +155,7 @@ interface RatingData{
   const fetchInfo = async () => {
     try{
       console.log("fetching unit!!");
-      const {data} = await axios.get(`http://localhost:5280/api/units/${unitId}`);
+      const {data} = await api.get(`/units/${unitId}`);
       console.log(data);
       setUnit(data);
     
@@ -183,23 +183,20 @@ interface RatingData{
       // Construct the payload
       const payload = {
         unitCode: unitId,
-        username: session?.user?.username, // Ensure session exists before accessing user data
+        username: session?.user?.username, 
         overallRating: averageRating, 
         comment: comment,
         timestamp: new Date().toISOString(),
-        ...formattedMetrics, // Spread the formatted metrics
+        ...formattedMetrics,
       };
-      console.log(payload);
+      
 
-
-      const result = await fetch("http://localhost:5280/api/review", {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-
-      });        
-
+      const result = await api.post("/review", payload, {
+        headers: { "Content-Type": "application/json" },
+      });    
       console.log(result);
+      router.push(`/review/${unitId}`)
+      
 
       // console.log(data);
     }catch(error){

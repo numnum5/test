@@ -1,0 +1,30 @@
+{
+    "unitCode": "CAB222",
+    "unitName": "Networks",
+    "faculty": "Computer Science",
+"description" : "Building on your digital systems knowledge, you will be introduced to practical and theoretical knowledge on a wide range of modern networking topics to be able to design, implement and maintain network-based applications. You will participate in practical networking exercises to provide hands-on experience with network-based computing.",
+    "area": "Network Communication",
+    "content": [
+     "Network architecture",
+        "Network media and Interconnecting device",
+        "Addressing, routing and naming",
+        "Network service protocols",
+        "Network analysis tools and techniques",
+        "Troubleshooting",
+        "Network security",
+        "Internet of Things"
+    ],
+    "weeklyTopics": [],
+    "assessments": [
+      "Assignment 1: Problem Solving Task",
+      "Assignment 2: Data Structures",
+      "Final Exam"
+    ],
+    "prerequisites": [
+      "IFB102"
+    ],
+    "postrequisites": [
+        "CAB440"
+    ],
+    "reviews": []
+}

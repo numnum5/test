@@ -5,8 +5,6 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { createPortal } from 'react-dom';
 import Link from 'next/link';
 
-
-
 interface HorizontalScrollProps {
   category : string;
   subjects : UnitData[];

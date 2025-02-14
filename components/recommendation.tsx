@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { HorizontalScroll } from "./Slider";
-import axios from "axios";
+import api from "@/lib/api";
 
 export function RecommendationsSection() {
   const [units, setUnits] = useState([]);
@@ -8,7 +8,7 @@ export function RecommendationsSection() {
   const fetchData = async () => {
     try{
       
-      const {data} = await axios.get("http://localhost:5280/api/units");
+      const {data} = await api.get("/units");
       // console.log(data);
       setUnits(data);
     

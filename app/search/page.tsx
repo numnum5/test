@@ -3,7 +3,6 @@ import React, { useEffect,useState } from 'react'
 import { Search } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Unit } from '@/components/Slider'
-import axios from 'axios';
 import {
   Select,
   SelectContent,
@@ -13,6 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import api from '@/lib/api'
 
 interface SearchBarProps {
 
@@ -140,7 +140,7 @@ function GridContent({ query }: GridContentProps) {
   const fetchUnits = async (query : string) => {
     try{
       console.log("fetching!!");
-      const {data} = await axios.get(`http://localhost:5280/api/units`);
+      const {data} = await api.get(`/units`);
       console.log(data);
 
       const filteredUnits = data.filter((item : UnitData) =>
