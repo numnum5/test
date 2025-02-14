@@ -1,3 +1,4 @@
+import api from '@/lib/api';
 import axios from 'axios';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -45,7 +46,7 @@ export const RevisedReviewSection = ({unit} : {unit : UnitData}) =>  {
     try{
       console.log("fetching!!");
 
-      const {data} = await axios.get(`http://localhost:5280/api/review/unit/${unit.unitCode}`);
+      const {data} = await api.get(`/review/unit/${unit.unitCode}`);
       console.log("Reviews: ");
       console.log(data);
       

@@ -5,8 +5,7 @@ import { FcGoogle } from 'react-icons/fc';
 import { FaGithub } from 'react-icons/fa';
 import { IoEyeOutline, IoEyeOffOutline } from 'react-icons/io5';
 import { signIn } from 'next-auth/react';
-import axios from 'axios';
-
+import api from '@/lib/api';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -28,7 +27,7 @@ const Login = () => {
     try {
       if (isSignUp) {
         // Handle signup - requires email, username, and password
-        await axios.post("http://localhost:5280/api/auth/register", {
+        await api.post("/auth/register", {
           username : formData.username,
           password : formData.password,
           email : formData.email
