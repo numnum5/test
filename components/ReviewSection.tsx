@@ -1,5 +1,4 @@
 import api from '@/lib/api';
-import axios from 'axios';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { BiLike, BiDislike } from 'react-icons/bi';
