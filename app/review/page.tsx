@@ -1,20 +1,9 @@
 "use client"
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { Search } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { HorizontalScroll } from "../fuckoff/page";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
+import { HorizontalScroll } from "@/components/Slider";
 import axios from "axios";
-
+import api from "@/lib/api";
 
 function Review(){
   return (
@@ -28,20 +17,14 @@ function Review(){
 
 
 
+
 const ReviewContent = () => {
-  const [search, setSearch] = useState("");
   const [data, setData] = useState([]);
-  const [error, setError] = useState(null);
-
-  const searchOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
-  }
-
-
   const fetchData = async () => {
     try{
       
-      const {data} = await axios.get("http://localhost:5280/api/units");
+      // const {data} = await axios.get("http://localhost:5280/api/units");
+      const {data } = await api.get("/units");
       console.log(data);
       setData(data);
     
@@ -103,38 +86,6 @@ const ReviewContent = () => {
                 Discover and compare units based on student experiences
               </p>
             </div>
-
-            {/* Search bar and filter */}
-            <div className="flex items-center w-full gap-4">
-              {/* <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40" />
-                <Input
-                  type="text"
-                  placeholder="Search units..."
-                  className="pl-10 w-full bg-white/5 border-white/10 text-white 
-                           placeholder:text-white/40 focus:ring-purple-500 focus:border-purple-500
-                           hover:bg-white/10 transition-colors"
-                  onChange={searchOnChange}
-                />
-              </div> */}
-
-              {/* Filter dropdown with updated styling */}
-              {/* <Select>
-                <SelectTrigger className="w-[180px] bg-white/5 border-white/10 text-white">
-                  <SelectValue placeholder="Select category" />
-                </SelectTrigger>
-                <SelectContent className="bg-[#1a1a1a] border-white/10">
-                  <SelectGroup>
-                    <SelectLabel className="text-white/60">Categories</SelectLabel>
-                    <SelectItem value="all" className="text-white hover:bg-white/10">All Units</SelectItem>
-                    <SelectItem value="core" className="text-white hover:bg-white/10">Core Units</SelectItem>
-                    <SelectItem value="elective" className="text-white hover:bg-white/10">Electives</SelectItem>
-                    <SelectItem value="major" className="text-white hover:bg-white/10">Major Units</SelectItem>
-                    <SelectItem value="minor" className="text-white hover:bg-white/10">Minor Units</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select> */}
-            </div>
           </div>
 
           {/* Sliders Section */}
@@ -149,26 +100,5 @@ const ReviewContent = () => {
   );
 };
 
-
-
-export function Filter() {
-  return (
-    <Select>
-      <SelectTrigger className="w-[180px]">
-        <SelectValue placeholder="Select a category" />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectGroup>
-          <SelectLabel>Categories</SelectLabel>
-          <SelectItem value="action">Action</SelectItem>
-          <SelectItem value="comedy">Comedy</SelectItem>
-          <SelectItem value="drama">Drama</SelectItem>
-          <SelectItem value="horror">Horror</SelectItem>
-          <SelectItem value="sci-fi">Sci-Fi</SelectItem>
-        </SelectGroup>
-      </SelectContent>
-    </Select>
-  )
-}
 
 export default Review;

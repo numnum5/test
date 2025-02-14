@@ -1,8 +1,6 @@
 'use client'
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, Book, AlertCircle, Loader2, Sparkles, BookOpen, GraduationCap, User, Bot } from 'lucide-react';
-// import { Send, Book, AlertCircle, Loader2 } from 'lucide-react';
-
 const page = () => {
   return (
     <div className='pt-24'>

@@ -7,7 +7,6 @@ import type {
   UserObject,
   AuthValidity,
   BackendAccessJWT,
-  BackendJWT,
   DecodedJWT
 } from "next-auth";
 import type { JWT } from "next-auth/jwt";

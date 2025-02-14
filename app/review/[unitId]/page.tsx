@@ -11,6 +11,8 @@ import { motion } from 'framer-motion';
 import { RevisedReviewSection } from '@/components/ReviewSection';
 import { IoSearchOutline } from 'react-icons/io5';
 import { BiLike, BiDislike } from 'react-icons/bi';
+// import { GetServerSideProps } from 'next';
+
 
 interface UnitData {
   id: string;
@@ -204,7 +206,7 @@ const SubjectRating = () => {
               
                  <div>
         {selectedSection === "qanda" ? (
-          <QASection2 subject={subject2}/>
+          <QASection subject={subject2}/>
         ) : (
               <div>  
               <RevisedReviewSection unit={subject2} />
@@ -312,13 +314,11 @@ const CourseDetailsSection = ({ subject, test } : {subject : any, test : UnitDat
 
 
 
-const QASection2 = ({ subject } : {subject : UnitData}) => {
+const QASection = ({ subject } : {subject : UnitData}) => {
     const [showAskForm, setShowAskForm] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedTag, setSelectedTag] = useState('all');
     const [newQuestion, setNewQuestion] = useState({ title: '', content: '', tags: [] });
-  
-    // Sample questions data with comments
     const [questions, setQuestions] = useState([
       {
         id: 1,
@@ -423,8 +423,7 @@ const QASection2 = ({ subject } : {subject : UnitData}) => {
           >
             {tag}
     </button>
-  ))}
-            
+      ))}      
           </div>
           <div className="flex justify-end gap-3">
             <button
@@ -444,12 +443,15 @@ const QASection2 = ({ subject } : {subject : UnitData}) => {
         </div>
       </div>
     );
-    
 
-    type Question = {
-      tags: string[];
-    };
-  const QuestionCard = ({ question, onVote } : {question : any, onVote : any}) => {
+
+type Question = {
+  tags: string[];
+};
+
+
+
+const QuestionCard = ({ question, onVote } : {question : any, onVote : any}) => {
     const [isExpanded, setIsExpanded] = useState(true); // Changed to default true
     const [newComment, setNewComment] = useState('');
     const [replyingTo, setReplyingTo] = useState(null);
@@ -577,153 +579,153 @@ const QASection2 = ({ subject } : {subject : UnitData}) => {
   </div>
 
   
-        {/* Comments Section */}
-        {isExpanded && (
-          <div className="border-t border-white/10 p-6">
-            {/* Comment Input */}
-            <div className="flex gap-3 mb-6">
-              <div className="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center">
-                <span className="text-white text-sm">U</span>
-              </div>
-              <div className="flex-1">
-                <textarea
-                  value={newComment}
-                  onChange={(e) => setNewComment(e.target.value)}
-                  placeholder="Add to the discussion..."
-                  className="w-full bg-white/10 rounded-lg p-3 text-white text-sm resize-none focus:outline-none focus:ring-1 focus:ring-purple-500/50"
-                  // rows="2"
-                />
-                <div className="flex justify-end gap-2 mt-2">
-                  <button
-                    onClick={() => setNewComment('')}
-                    className="px-3 py-1.5 text-white/60 hover:text-white text-sm"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    onClick={() => handleAddComment(question.id)}
-                    disabled={!newComment.trim()}
-                    className="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-sm rounded-lg disabled:opacity-50"
-                  >
-                    Comment
-                  </button>
-                </div>
+      {/* Comments Section */}
+      {isExpanded && (
+        <div className="border-t border-white/10 p-6">
+          {/* Comment Input */}
+          <div className="flex gap-3 mb-6">
+            <div className="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center">
+              <span className="text-white text-sm">U</span>
+            </div>
+            <div className="flex-1">
+              <textarea
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                placeholder="Add to the discussion..."
+                className="w-full bg-white/10 rounded-lg p-3 text-white text-sm resize-none focus:outline-none focus:ring-1 focus:ring-purple-500/50"
+                // rows="2"
+              />
+              <div className="flex justify-end gap-2 mt-2">
+                <button
+                  onClick={() => setNewComment('')}
+                  className="px-3 py-1.5 text-white/60 hover:text-white text-sm"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => handleAddComment(question.id)}
+                  disabled={!newComment.trim()}
+                  className="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-sm rounded-lg disabled:opacity-50"
+                >
+                  Comment
+                </button>
               </div>
             </div>
-  
-            {/* Comments List */}
-            <div className="space-y-4">
-              {question.comments.map((comment : any) => (
-                <div key={comment.id} className="flex gap-3 group">
-                  <div className="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center">
-                    <span className="text-white text-sm">{comment.author[0]}</span>
+          </div>
+
+          {/* Comments List */}
+          <div className="space-y-4">
+            {question.comments.map((comment : any) => (
+              <div key={comment.id} className="flex gap-3 group">
+                <div className="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center">
+                  <span className="text-white text-sm">{comment.author[0]}</span>
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="font-medium text-white">{comment.author}</span>
+                    <span className="text-sm text-white/60">
+                      {new Date(comment.timestamp).toLocaleDateString()}
+                    </span>
                   </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="font-medium text-white">{comment.author}</span>
-                      <span className="text-sm text-white/60">
-                        {new Date(comment.timestamp).toLocaleDateString()}
-                      </span>
+                  <p className="text-white/80 text-sm mb-2">{comment.content}</p>
+                  
+                  {/* Comment Actions */}
+                  <div className="flex items-center gap-4">
+                    <button className="text-white/60 hover:text-white text-sm flex items-center gap-1">
+                      <BiLike size={16} />
+                      <span>{comment.likes}</span>
+                    </button>
+                    <button className="text-white/60 hover:text-white text-sm flex items-center gap-1">
+                      <BiDislike size={16} />
+                      <span>{comment.dislikes}</span>
+                    </button>
+                    <button 
+                      onClick={() => setReplyingTo(comment.id)}
+                      className="text-white/60 hover:text-white text-sm"
+                    >
+                      Reply
+                    </button>
+                  </div>
+
+                  {/* Reply Input */}
+                  {replyingTo === comment.id && (
+                    <div className="mt-3 pl-6">
+                      <div className="flex gap-3">
+                        <div className="w-6 h-6 rounded-full bg-purple-600 flex items-center justify-center">
+                          <span className="text-white text-xs">U</span>
+                        </div>
+                        <div className="flex-1">
+                          <textarea
+                            value={replyContent}
+                            onChange={(e) => setReplyContent(e.target.value)}
+                            placeholder="Write a reply..."
+                            className="w-full bg-white/10 rounded-lg p-3 text-white text-sm resize-none focus:outline-none focus:ring-1 focus:ring-purple-500/50"
+                            // rows="2"
+                          />
+                          <div className="flex justify-end gap-2 mt-2">
+                            <button
+                              onClick={() => {
+                                setReplyingTo(null);
+                                setReplyContent('');
+                              }}
+                              className="px-3 py-1.5 text-white/60 hover:text-white text-sm"
+                            >
+                              Cancel
+                            </button>
+                            <button
+                              onClick={() => handleAddReply(question.id, comment.id)}
+                              disabled={!replyContent.trim()}
+                              className="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-sm rounded-lg disabled:opacity-50"
+                            >
+                              Reply
+                            </button>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <p className="text-white/80 text-sm mb-2">{comment.content}</p>
-                    
-                    {/* Comment Actions */}
-                    <div className="flex items-center gap-4">
-                      <button className="text-white/60 hover:text-white text-sm flex items-center gap-1">
-                        <BiLike size={16} />
-                        <span>{comment.likes}</span>
-                      </button>
-                      <button className="text-white/60 hover:text-white text-sm flex items-center gap-1">
-                        <BiDislike size={16} />
-                        <span>{comment.dislikes}</span>
-                      </button>
-                      <button 
-                        onClick={() => setReplyingTo(comment.id)}
-                        className="text-white/60 hover:text-white text-sm"
-                      >
-                        Reply
-                      </button>
-                    </div>
-  
-                    {/* Reply Input */}
-                    {replyingTo === comment.id && (
-                      <div className="mt-3 pl-6">
-                        <div className="flex gap-3">
+                  )}
+
+                  {/* Nested Replies */}
+                  {comment.replies && comment.replies.length > 0 && (
+                    <div className="mt-3 pl-6 space-y-3 border-l border-white/10">
+                      {comment.replies.map((reply : any) => (
+                        <div key={reply.id} className="flex gap-3 group">
                           <div className="w-6 h-6 rounded-full bg-purple-600 flex items-center justify-center">
-                            <span className="text-white text-xs">U</span>
+                            <span className="text-white text-xs">{reply.author[0]}</span>
                           </div>
                           <div className="flex-1">
-                            <textarea
-                              value={replyContent}
-                              onChange={(e) => setReplyContent(e.target.value)}
-                              placeholder="Write a reply..."
-                              className="w-full bg-white/10 rounded-lg p-3 text-white text-sm resize-none focus:outline-none focus:ring-1 focus:ring-purple-500/50"
-                              // rows="2"
-                            />
-                            <div className="flex justify-end gap-2 mt-2">
-                              <button
-                                onClick={() => {
-                                  setReplyingTo(null);
-                                  setReplyContent('');
-                                }}
-                                className="px-3 py-1.5 text-white/60 hover:text-white text-sm"
-                              >
-                                Cancel
+                            <div className="flex items-center gap-2 mb-1">
+                              <span className="font-medium text-white">{reply.author}</span>
+                              <span className="text-sm text-white/60">
+                                {new Date(reply.timestamp).toLocaleDateString()}
+                              </span>
+                            </div>
+                            <p className="text-white/80 text-sm mb-2">{reply.content}</p>
+                            
+                            {/* Reply Actions */}
+                            <div className="flex items-center gap-4">
+                              <button className="text-white/60 hover:text-white text-sm flex items-center gap-1">
+                                <BiLike size={16} />
+                                <span>{reply.likes}</span>
                               </button>
-                              <button
-                                onClick={() => handleAddReply(question.id, comment.id)}
-                                disabled={!replyContent.trim()}
-                                className="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-sm rounded-lg disabled:opacity-50"
-                              >
-                                Reply
+                              <button className="text-white/60 hover:text-white text-sm flex items-center gap-1">
+                                <BiDislike size={16} />
+                                <span>{reply.dislikes}</span>
                               </button>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    )}
-  
-                    {/* Nested Replies */}
-                    {comment.replies && comment.replies.length > 0 && (
-                      <div className="mt-3 pl-6 space-y-3 border-l border-white/10">
-                        {comment.replies.map((reply : any) => (
-                          <div key={reply.id} className="flex gap-3 group">
-                            <div className="w-6 h-6 rounded-full bg-purple-600 flex items-center justify-center">
-                              <span className="text-white text-xs">{reply.author[0]}</span>
-                            </div>
-                            <div className="flex-1">
-                              <div className="flex items-center gap-2 mb-1">
-                                <span className="font-medium text-white">{reply.author}</span>
-                                <span className="text-sm text-white/60">
-                                  {new Date(reply.timestamp).toLocaleDateString()}
-                                </span>
-                              </div>
-                              <p className="text-white/80 text-sm mb-2">{reply.content}</p>
-                              
-                              {/* Reply Actions */}
-                              <div className="flex items-center gap-4">
-                                <button className="text-white/60 hover:text-white text-sm flex items-center gap-1">
-                                  <BiLike size={16} />
-                                  <span>{reply.likes}</span>
-                                </button>
-                                <button className="text-white/60 hover:text-white text-sm flex items-center gap-1">
-                                  <BiDislike size={16} />
-                                  <span>{reply.dislikes}</span>
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
-        )}
-      </div>
-    );
+        </div>
+      )}
+    </div>
+  );
 }
   
     return (
@@ -817,26 +819,6 @@ const QASection2 = ({ subject } : {subject : UnitData}) => {
     );
   };
 
-
-const questions = [    {
-    id: 1,
-    title: "How to prepare for the final exam?",
-    content: "I'm struggling with the theoretical concepts. Any tips?",
-    author: "Student123",
-    timestamp: "2024-02-20T10:00:00Z",
-    votes: 15,
-    answers: [
-      {
-        id: 1,
-        content: "Focus on the weekly practice problems and past exam papers...",
-        author: "TopStudent",
-        timestamp: "2024-02-20T11:30:00Z",
-        isAccepted: true,
-        votes: 8
-      }
-    ],
-    tags: ["Exam", "Study Tips"]
-  }]
 
 
 export default SubjectRating;

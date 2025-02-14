@@ -1,17 +1,20 @@
-
+'use client'
 import { useState,useEffect, useRef, RefObject, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { createPortal } from 'react-dom';
 import Link from 'next/link';
 
+
+
 interface HorizontalScrollProps {
   category : string;
   subjects : Unit[];
+
 }
 
 export const HorizontalScroll = ({category, subjects} : HorizontalScrollProps) => {
-  const scrollRef = useRef(null);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
   const [showControls, setShowControls] = useState(false);
 
   const scroll = (direction: "left" | "right") => { // typing direction correctly
@@ -69,7 +72,7 @@ export const HorizontalScroll = ({category, subjects} : HorizontalScrollProps) =
       {/* Scrollable Container */}
       <div className="relative" >
       <div
-      
+        key={category}
         ref={scrollRef}
         className="relative flex gap-4 w-full scrollbar-hide overflow-x-scroll whitespace-nowrap scroll-container border-solid"
         style={{
@@ -83,13 +86,8 @@ export const HorizontalScroll = ({category, subjects} : HorizontalScrollProps) =
 
         {subjects.length > 0 ? subjects.map(unit => (
             <Unit 
-            key={unit.unitCode}
-            unitCode={unit.unitCode}
-            unitName={unit.unitName}
-            description={unit.description}
-            rating={unit.rating}
-            prerequisites={unit.prerequisites}
-            scrollRef={scrollRef}
+              unit={unit}
+              scrollRef={scrollRef}
             />)
         )
         :
@@ -111,10 +109,14 @@ interface Unit {
   description : string,
   rating : number,
   prerequisites : string[],
-  scrollRef : RefObject<null>
 }
 
-export const Unit = ({ unitCode, unitName, description, rating, prerequisites, scrollRef}: Unit) => {
+interface UnitProps {
+  unit: Unit;
+  scrollRef?: RefObject<HTMLDivElement | null>;
+}
+export const Unit = ({ unit, scrollRef}: UnitProps) => {
+  const { unitCode, unitName, description, rating, prerequisites } = unit;
   const [isHovered, setIsHovered] = useState(false);
   const [position, setPosition] = useState({ top: 0, left: 0, width: 0 });
   const cardRef = useRef<HTMLDivElement>(null);
@@ -145,7 +147,7 @@ export const Unit = ({ unitCode, unitName, description, rating, prerequisites, s
 
   // Simplified effect for event listeners
   useEffect(() => {
-    const scrollContainer = scrollRef.current;
+    const scrollContainer = scrollRef?.current;
 
     if (isHovered) {
       updatePosition(); // Initial position
@@ -252,10 +254,10 @@ export const Unit = ({ unitCode, unitName, description, rating, prerequisites, s
                    <div className="space-y-2">
                      <p className="text-white/60 text-sm">Prerequisites</p>
                      <div className="flex flex-wrap gap-2">
-                       {prerequisites.map(name => (
-                      <span className="text-xs px-2 py-1 rounded-full bg-white/10 text-white/90">
-                      {name}
-                    </span>
+                       {prerequisites.map((name, index) => (
+                        <span key={name || index} className="text-xs px-2 py-1 rounded-full bg-white/10 text-white/90">
+                        {name}
+                      </span>
 
                     ))}
                     </div>
@@ -291,61 +293,3 @@ export const Unit = ({ unitCode, unitName, description, rating, prerequisites, s
 };
 
 
-
-export const subjects2 = [
-  {
-    unitCode: "CAB202",
-    name: "Digital Systems and Microcontrollers",
-    type: "Core Unit",
-    description:
-      "Learn about digital systems, microprocessors, and embedded systems programming. This unit covers both theoretical concepts and practical applications.",
-    creditPoints: 12,
-    semester: "Sem 1, 2024",
-    prerequisites: ["CAB201", "MXB103"],
-    rating: 4.5,
-  },
-  {
-    unitCode: "CAB303",
-    name: "Software Development",
-    type: "Core Unit",
-    description:
-      "A hands-on unit covering advanced software engineering techniques, including agile methodologies and software architecture.",
-    creditPoints: 12,
-    semester: "Sem 2, 2024",
-    prerequisites: ["CAB202"],
-    rating: 4.3,
-  },
-  {
-    unitCode: "IFN647",
-    name: "Cloud Computing",
-    type: "Elective Unit",
-    description:
-      "Explore cloud computing concepts, AWS services, and scalable cloud applications development.",
-    creditPoints: 12,
-    semester: "Sem 1, 2024",
-    prerequisites: ["CAB303"],
-    rating: 4.7,
-  },
-  {
-    unitCode: "MXB113",
-    name: "Mathematics for Computing",
-    type: "Core Unit",
-    description:
-      "An introduction to discrete mathematics, probability, and linear algebra for computing applications.",
-    creditPoints: 12,
-    semester: "Sem 2, 2024",
-    prerequisites: [],
-    rating: 4.2,
-  },
-  {
-    unitCode: "CAB440",
-    name: "Cyber Security Fundamentals",
-    type: "Elective Unit",
-    description:
-      "Gain insights into network security, cryptography, and ethical hacking techniques.",
-    creditPoints: 12,
-    semester: "Sem 1, 2024",
-    prerequisites: ["CAB303"],
-    rating: 4.6,
-  }
-];

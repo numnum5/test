@@ -13,12 +13,12 @@ import { signOut, useSession } from "next-auth/react";
 const TOP_OFFSET = 66;
 
 const Navbar = () => {
-    const { data: session, status } = useSession();
+    const { data: session } = useSession();
     const { setTheme } = useTheme()
     const [showMobileMenu, setShowMobileMenu] = useState(false);
     const [showBackground, setShowBackground] = useState(false);
 
-    console.log(session);
+    // console.log(session);
 
 
     useEffect(() => {
@@ -62,7 +62,9 @@ const Navbar = () => {
                 <div className="flex-row ml-8 gap-7 hidden lg:flex">
                     <NavbarItem label="Home" link="/"/>
                     <NavbarItem label="Reviews" link="/review"/>
+                    <NavbarItem label="Search" link="/search"/>
                     <NavbarItem label="AI Help" link="/AI"/>
+                    
                 </div>
                 <div onClick={toggleMobileMenu} className="lg:hidden flex flex-row items-center gap-2 ml-8 cursor-pointer relative">
                     <p className="text-white text-sm">Browse</p>

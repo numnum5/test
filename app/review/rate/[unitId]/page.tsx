@@ -1,9 +1,7 @@
 'use client';
 import { useState, useEffect, FormEvent } from 'react';
 import { Slider } from "@/components/ui/slider";
-import { useSession, signIn } from "next-auth/react";
 import axios from 'axios';
-import { redirect } from "next/navigation";
 import { useParams } from 'next/navigation';
 import React from 'react'
 
@@ -17,16 +15,6 @@ interface RatingMetric {
   };
   isNegative : boolean;
 }
-
-const unitInfo: UnitInfo = {
-  code: "COMP3027",
-  name: "Machine Learning",
-  school: "School of Computer Science",
-  coordinator: "Dr. Jane Smith",
-  credits: 6,
-  description: "This unit introduces fundamental concepts and algorithms in machine learning, covering supervised and unsupervised learning techniques...",
-  prerequisites: ["COMP2123", "MATH1064"]
-};
 
 interface UnitData {
   id: string;
@@ -42,31 +30,6 @@ interface UnitData {
   postrequisites: string[]; 
   reviews: any[];
 }
-interface UnitInfo {
-  code: string;
-  name: string;
-  school: string;
-  coordinator: string;
-  credits: number;
-  description: string;
-  prerequisites?: string[];
-}
-
-interface ReviewData {
-  id : string,
-  unitCode : string,
-  username : string,
-  overallRating : number,
-  teachingRating : number,
-  workloadRating : number,
-  difficultyRating : number,
-  contentRating : number,
-  timestamp : EpochTimeStamp,
-  comment : string
-  like : number,
-  dislike : number,
-  
-}
 
 interface RatingData{
   contentRating : number,
@@ -77,20 +40,9 @@ interface RatingData{
 }
 
  const ReviewSubmissionForm = () => {
-  const { data: session, status } = useSession();
-  // const router = useRouter();
-
-  
-
-  if (status === "loading") return <p>Loading...</p>
-  if (!session) {
-    redirect("/login"); // Redirect to login if no session
-  }
-
-
   const params = useParams();
   const unitId = params.unitId;
-  const [semester, setSemester] = useState('');
+  // const [semester, setSemester] = useState('');
   const [grade, setGrade] = useState('');
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState<RatingData | null>(null);
@@ -146,10 +98,6 @@ interface RatingData{
     { value: '2023S1', label: 'Semester 1, 2023' },
     { value: '2022S2', label: 'Semester 2, 2022' },
   ];
-
-  console.log(unitId);
-
-
   
 
   const fetchRatings = async () => {
@@ -168,8 +116,8 @@ interface RatingData{
 
   const fetchInfo = async () => {
     try{
-      console.log("fetching!!");
-      const {data} = await axios.get(`http://localhost:5280/api/review`);
+      console.log("fetching unit!!");
+      const {data} = await axios.get(`http://localhost:5280/api/units/${unitId}`);
       console.log(data);
       setUnit(data);
     
@@ -202,11 +150,28 @@ interface RatingData{
     ));
   };
 
+  
+       
+
   const handleSubmit = async (e : FormEvent) => {
     e.preventDefault();
 
     try{
-      await axios.post("http://localhost:5280/api/units", {
+      await axios.post("http://localhost:5280/api/review/", {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(
+            {
+                // unitCode: unitId,
+                // username: session.user.username,
+                // overallRating: metrics
+                // "contentRating": 4.0,
+                // "teachingRating": 1.1,
+                // "difficultyRating": 3.5,
+                // "workloadRating": 3.0,
+                // comment: comment,
+                // timestamp: new Date(),
+            })
 
       });        
 
@@ -218,8 +183,8 @@ interface RatingData{
     
   return (
     <form onSubmit={handleSubmit}>
-    <div className='flex flex-row pt-24 pb-24'>
-     <div className="w-1/3 px-6">
+    <div className='flex flex-row pt-24 pb-24 p-4'>
+     <div className="w-1/3 pr-4">
         <div className="bg-[rgba(255,255,255,0.05)] rounded-lg p-6 sticky top-24">
           <div className="space-y-6">
             {/* Unit Info */}
@@ -281,7 +246,7 @@ interface RatingData{
         </div>
       </div>
 
-      <div className="w-2/3 max-w-2xl pr-6 space-y-8">
+      <div className="w-2/3 space-y-8 bg-[rgba(255,255,255,0.05)] rounded-lg p-6 ">
       <div>
         <h1 className="text-2xl font-bold text-white mb-2">
           Tell us about your experience

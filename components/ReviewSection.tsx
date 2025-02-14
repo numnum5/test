@@ -1,4 +1,3 @@
-import Review from '@/app/review/page';
 import axios from 'axios';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';

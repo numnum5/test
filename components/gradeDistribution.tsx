@@ -1,5 +1,3 @@
-
-
 interface GradeData {
   grade: string;
   percentage: number;

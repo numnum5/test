@@ -123,7 +123,8 @@ const AIHelp = () => {
           {filteredAIs.map((ai : any) => (
             <div
               key={ai.id}
-              className={`group relative bg-gradient-to-br ${colorVariants[ai.color]} 
+              // className={`group relative bg-gradient-to-br ${colorVariants[ai.color]} 
+               className={`group relative bg-gradient-to-br 
                 backdrop-blur-lg rounded-xl p-6 border border-white/10 
                 transition-all duration-300 cursor-pointer
                 hover:scale-[1.02] hover:shadow-xl`}
