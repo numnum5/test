@@ -91,6 +91,29 @@ interface RatingData{
       }
     }
   ]);
+
+  useEffect(()=> {
+    // console.log("ADADD");
+    fetchRatings();
+    fetchInfo();
+  }, [unitId])
+
+  useEffect(() => {
+    // For negative metrics, invert the score (10 - value) before averaging
+    const adjustedTotal = metrics.reduce((sum, metric) => {
+      const adjustedValue = metric.isNegative ? (10 - metric.value) : metric.value;
+      return sum + adjustedValue;
+    }, 0);
+    
+    setAverageRating(Number((adjustedTotal / metrics.length).toFixed(1)));
+  }, [metrics]);
+
+  const handleRatingChange = (metricIndex: number, newValue: number[]) => {
+    setMetrics(metrics.map((metric, index) => 
+      index === metricIndex ? { ...metric, value: Number(newValue[0].toFixed(1)) } : metric
+    ));
+  };
+
   
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -143,27 +166,6 @@ interface RatingData{
 
   }
 
-  useEffect(()=> {
-    // console.log("ADADD");
-    fetchRatings();
-    fetchInfo();
-  }, [unitId])
-
-  useEffect(() => {
-    // For negative metrics, invert the score (10 - value) before averaging
-    const adjustedTotal = metrics.reduce((sum, metric) => {
-      const adjustedValue = metric.isNegative ? (10 - metric.value) : metric.value;
-      return sum + adjustedValue;
-    }, 0);
-    
-    setAverageRating(Number((adjustedTotal / metrics.length).toFixed(1)));
-  }, [metrics]);
-
-  const handleRatingChange = (metricIndex: number, newValue: number[]) => {
-    setMetrics(metrics.map((metric, index) => 
-      index === metricIndex ? { ...metric, value: Number(newValue[0].toFixed(1)) } : metric
-    ));
-  };
 
   
        
