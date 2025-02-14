@@ -41,19 +41,6 @@ interface RatingData{
 }
 
  const ReviewSubmissionForm = () => {
-  const { data: session, status } = useSession();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push("/login"); // Redirect to login page
-    }
-  }, [status, router]);
-
-  if (status === "loading") {
-    return <p>Loading...</p>;
-  }
-
   const params = useParams();
   const unitId = params.unitId;
   // const [semester, setSemester] = useState('');
@@ -105,6 +92,20 @@ interface RatingData{
     }
   ]);
   
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/login"); // Redirect to login page
+    }
+  }, [status, router]);
+
+  if (status === "loading") {
+    return <p>Loading...</p>;
+  }
+
+ 
   // const semesterOptions = [
   //   { value: '2024S2', label: 'Semester 2, 2024' },
   //   { value: '2024S1', label: 'Semester 1, 2024' },
@@ -186,24 +187,17 @@ interface RatingData{
         timestamp: new Date().toISOString(),
         ...formattedMetrics, // Spread the formatted metrics
       };
-  
-      // await axios.post("http://localhost:5280/api/review/", {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(
-      //       {
-      //           // unitCode: unitId,
-      //           // username: session.user.username,
-      //           // overallRating: metrics
-      //           // "contentRating": 4.0,
-      //           // "teachingRating": 1.1,
-      //           // "difficultyRating": 3.5,
-      //           // "workloadRating": 3.0,
-      //           // comment: comment,
-      //           // timestamp: new Date(),
-      //       })
+      console.log(payload);
 
-      // });        
+
+      const result = await fetch("http://localhost:5280/api/review", {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+
+      });        
+
+      console.log(result);
 
       // console.log(data);
     }catch(error){

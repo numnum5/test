@@ -103,7 +103,7 @@ export default AssessmentDetails;
 
 
 
-export const AssessmentSection: FC<Props> = ({ assessment, onReviewClick }) => {
+export const AssessmentSection: FC<Props> = ({ assessment }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const getAssessmentTypeColor = (type: string) => {
@@ -117,29 +117,6 @@ export const AssessmentSection: FC<Props> = ({ assessment, onReviewClick }) => {
   };
 
 
-  const reviews = [
-    {
-      rating: 4,
-      difficulty: 3,
-      timeSpent: '15 hours',
-      comment: 'Challenging but very practical. Start early!',
-      helpful: 12
-    },
-    {
-      rating: 4,
-      difficulty: 3,
-      timeSpent: '15 hours',
-      comment: 'Challenging but very practical. Start early!',
-      helpful: 12
-    },
-    {
-      rating: 4,
-      difficulty: 3,
-      timeSpent: '15 hours',
-      comment: 'Challenging but very practical. Start early!',
-      helpful: 12
-    }
-  ]
 
   const sampleReviews: Review[] = [
     {

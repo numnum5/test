@@ -9,8 +9,8 @@ import { useParams } from 'next/navigation';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import { RevisedReviewSection } from '@/components/ReviewSection';
-import { IoSearchOutline } from 'react-icons/io5';
-import { BiLike, BiDislike } from 'react-icons/bi';
+// import { IoSearchOutline } from 'react-icons/io5';
+// import { BiLike, BiDislike } from 'react-icons/bi';
 // import { GetServerSideProps } from 'next';
 
 
@@ -1193,7 +1193,7 @@ const subject : Subject =
     learningResources: string[];
     assessments: Assessment[];
     recommendations: Recommendation[];
-    reviews: any[];
+    reviews: string[];
     skills: string[];
     qa: QAModule;
     career: CareerModule;

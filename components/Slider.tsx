@@ -86,6 +86,7 @@ export const HorizontalScroll = ({category, subjects} : HorizontalScrollProps) =
 
         {subjects.length > 0 ? subjects.map(unit => (
             <Unit 
+              key={unit.unitCode}
               unit={unit}
               scrollRef={scrollRef}
             />)

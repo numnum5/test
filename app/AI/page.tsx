@@ -4,6 +4,19 @@ import { IoChatbubbleEllipsesOutline, IoSearchOutline } from 'react-icons/io5';
 import { FaDatabase, FaBrain } from 'react-icons/fa';
 import { BsFileEarmarkCode } from 'react-icons/bs';
 
+// interface AiTutor{
+
+//   id : string;
+//   unitCode : string;
+//   name : string;
+//   icon :  React.JSX.Element;
+//   capabilities : string[];
+//   topics : string[];
+//   personality : string;
+//   color : string;
+//   description : string;
+// }
+
 const AIHelp = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedAI, setSelectedAI] = useState(null);
@@ -80,11 +93,11 @@ const AIHelp = () => {
     ai.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const colorVariants = {
-    blue: 'from-blue-500/20 to-cyan-500/20 hover:from-blue-500/30 hover:to-cyan-500/30',
-    purple: 'from-purple-500/20 to-pink-500/20 hover:from-purple-500/30 hover:to-pink-500/30',
-    green: 'from-green-500/20 to-emerald-500/20 hover:from-green-500/30 hover:to-emerald-500/30'
-  };
+  // const colorVariants = {
+  //   blue: 'from-blue-500/20 to-cyan-500/20 hover:from-blue-500/30 hover:to-cyan-500/30',
+  //   purple: 'from-purple-500/20 to-pink-500/20 hover:from-purple-500/30 hover:to-pink-500/30',
+  //   green: 'from-green-500/20 to-emerald-500/20 hover:from-green-500/30 hover:to-emerald-500/30'
+  // };
 
   return (
     <div className="min-h-screen pt-24 bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0EA5E9]">
@@ -120,7 +133,7 @@ const AIHelp = () => {
 
         {/* AI Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredAIs.map((ai : any) => (
+          {filteredAIs.map((ai) => (
             <div
               key={ai.id}
               // className={`group relative bg-gradient-to-br ${colorVariants[ai.color]} 
@@ -148,7 +161,7 @@ const AIHelp = () => {
               <div className="mb-4">
                 <h4 className="text-white/80 text-sm font-medium mb-2">Capabilities:</h4>
                 <div className="flex flex-wrap gap-2">
-                  {ai.capabilities.map((capability : any, index : any) => (
+                  {ai.capabilities.map((capability : string, index : number) => (
                     <span
                       key={index}
                       className="text-xs px-2 py-1 rounded-full bg-white/10 text-white/80"
@@ -163,7 +176,7 @@ const AIHelp = () => {
               <div>
                 <h4 className="text-white/80 text-sm font-medium mb-2">Key Topics:</h4>
                 <div className="flex flex-wrap gap-2">
-                  {ai.topics.map((topic : any, index : any) => (
+                  {ai.topics.map((topic : string, index : number) => (
                     <span
                       key={index}
                       className="text-xs px-2 py-1 rounded-full bg-white/10 text-white/80"
