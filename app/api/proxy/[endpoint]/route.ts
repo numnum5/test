@@ -10,8 +10,8 @@ interface Params {
   endpoint: string;
 }
 
-export async function GET(req: NextRequest, context: { params: Params }) {
-  const { endpoint } = context.params; // Access the dynamic segment 'endpoint' directly from context.params
+export async function GET(req: NextRequest, { params }: { params: Params }) {
+  const { endpoint } = params; // Access the dynamic segment 'endpoint' directly from context.params
   
   try {
     // Make the GET request to the backend API using the reusable API instance (axios)
