@@ -2,7 +2,8 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { HorizontalScroll } from "@/components/Slider";
-import api from "@/lib/api";
+// import api from "@/lib/api";
+import axios from "axios";
 
 function Review(){
   return (
@@ -21,9 +22,9 @@ const ReviewContent = () => {
   const [data, setData] = useState([]);
   const fetchData = async () => {
     try{
-      
+      // console.log("ADDA");
       // const {data} = await axios.get("http://localhost:5280/api/units");
-      const {data } = await api.get("/units");
+      const {data } = await axios.get("api/proxy/units");
       console.log(data);
       setData(data);
     
