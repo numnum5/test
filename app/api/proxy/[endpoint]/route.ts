@@ -1,17 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 import api from "@/lib/api";
 
-interface Params {
-  endpoint: string;
-}
-
 // Define the Params interface to match the dynamic segments of the URL
-interface Params {
-  endpoint: string;
-}
 
-export async function GET(req: NextRequest, { params }: { params: Params }) {
-  const { endpoint } = params; // Access the dynamic segment 'endpoint' directly from context.params
+export async function GET(req: NextRequest) {
+
+  const endpoint = req.nextUrl.pathname.split('/').pop(); // Get the dynamic part of the path (e.g., 'units', 'reviews')
+  // console.log(endpoint);
+  if (!endpoint) {
+    return NextResponse.json(
+      { error: 'Endpoint not provided' },
+      { status: 400 }
+    );
+  }
   
   try {
     // Make the GET request to the backend API using the reusable API instance (axios)
